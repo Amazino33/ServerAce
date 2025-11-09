@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
@@ -28,7 +29,19 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = Auth::user();
+
+        // IF NOT VERIFIED → SEND TO VERIFICATION NOTICE
+        if (! $user->hasVerifiedEmail()) {
+            return redirect()->route('verification.notice');
+        }
+
+        return match ($user->role) {
+            UserRole::ADMIN => redirect()->route('admin.dashboard'),
+            UserRole::CLIENT => redirect()->route('client.dashboard'),
+            UserRole::FREELANCER => redirect()->route('freelancer.dashboard'),
+            default => redirect()->intended(route('dashboard')),
+        };
     }
 
     /**
@@ -39,9 +52,11 @@ class AuthenticatedSessionController extends Controller
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        // Clear all session data
+        $request->session()->flush();
+
+        return redirect('/')->with('status', 'You have been logged out successfully.');
     }
 }

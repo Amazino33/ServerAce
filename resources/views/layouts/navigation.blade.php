@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
+            <!-- User Settings Dropdown -->
             @auth
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
@@ -106,6 +106,17 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
+                <x-role-badge />
+            </div>
+            @else
+            <!-- GUEST: BIG LOGIN / REGISTER BUTTONS -->
+            <div class="flex items-center space-x-4">
+                <a href="{{ route('login') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium">
+                    Log in
+                </a>
+                <a href="{{ route('register') }}" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-full hover:shadow-lg transform hover:scale-105 transition">
+                    Start Free → 
+                </a>
             </div>
             @endauth
 
@@ -151,9 +162,12 @@
         <!-- Responsive Settings Options -->
         @auth
         <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+            <div class="px-4 flex gap-2">
+                <div>
+                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                </div>
+                <x-role-badge />
             </div>
 
             <div class="mt-3 space-y-1">
