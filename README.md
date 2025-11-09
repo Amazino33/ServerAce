@@ -38,3 +38,4 @@ php artisan migrate --seed
 php artisan storage:link
 npm run dev
 php artisan serve
+php artisan serve
