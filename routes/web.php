@@ -3,6 +3,7 @@
 use App\Enums\UserRole;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
+use App\Models\Gig;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -48,6 +49,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/category/{category:slug}', [CategoryController::class, 'show'])
         ->name('category.show');
     // Route::resource('gigs', GigController::class);
+
+    Route::get('/gig/{gig:slug}', function (Gig $gig) {
+        return view('gigs.show', compact('gig'));
+    })->name('gigs.show');
 });
 
 Route::middleware('auth')->group(function () {

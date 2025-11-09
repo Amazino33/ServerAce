@@ -6,6 +6,8 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
+            @livewire('client.create-gig')
+
             <!-- Post New Gig Button -->
             <div class="mb-8 text-center">
                 <a href="#" class="inline-flex items-center px-8 py-4 bg-green-600 text-white text-lg font-bold rounded-xl hover:bg-green-700 shadow-lg">
