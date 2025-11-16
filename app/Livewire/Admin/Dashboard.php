@@ -195,6 +195,15 @@ class Dashboard extends Component
             'total_applications' => GigApplication::count(),
             'pending_applications' => GigApplication::pending()->count(),
             'accepted_applications' => GigApplication::accepted()->count(),
+
+            // In house stats
+            'inhouse_requests' => Gig::where('assigned_to_inhouse', true)->count(),
+            'pending_inhouse' => Gig::where('assigned_to_inhouse', true)
+                ->whereNull('inhouse_developer_id')
+                ->count(),
+            'assigned_inhouse' => Gig::where('assigned_to_inhouse', true)
+                ->whereNotNull('inhouse_developer_id')
+                ->count(),
         ];
     }
 

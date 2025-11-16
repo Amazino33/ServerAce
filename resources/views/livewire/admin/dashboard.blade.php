@@ -87,6 +87,45 @@
                     </div>
                 </div>
             </div>
+
+            <!-- In House Gigs -->
+            <a href="{{ route('admin.inhouse-assignments') }}" 
+                class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500 hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 cursor-pointer group">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600 font-semibold">In-House Requests</p>
+                            <p class="text-3xl font-bold text-gray-900 mt-2">{{ $stats['inhouse_requests'] ?? 0 }}</p>
+                            
+                            <div class="mt-3 flex items-center gap-4">
+                                @if(($stats['pending_inhouse'] ?? 0) > 0)
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800">
+                                        <i class="fas fa-clock mr-1"></i>
+                                        {{ $stats['pending_inhouse'] }} pending
+                                    </span>
+                                @endif
+                                
+                                @if(($stats['assigned_inhouse'] ?? 0) > 0)
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800">
+                                        <i class="fas fa-check mr-1"></i>
+                                        {{ $stats['assigned_inhouse'] }} assigned
+                                    </span>
+                                @endif
+                            </div>
+                            
+                            <p class="text-xs text-purple-600 mt-3 font-medium group-hover:text-purple-700 flex items-center">
+                                Click to manage
+                                <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                            </p>
+                        </div>
+                        <div class="bg-purple-100 rounded-full p-3 group-hover:bg-purple-200 transition-colors">
+                            <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
+                        </div>
+                    </div>
+            </a>
+
         </div>
 
         <!-- Tabs Navigation -->
@@ -166,6 +205,24 @@
                                     </div>
                                 </div>
                             </button>
+
+                            <a href="{{ route('admin.inhouse-assignments') }}" 
+                                class="flex items-center gap-4 p-4 border-2 border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition group">
+                                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition">
+                                    <i class="fas fa-home text-xl text-purple-600"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-semibold text-gray-900">In-House Assignments</p>
+                                    <p class="text-sm text-gray-600">
+                                        @if(($stats['pending_inhouse'] ?? 0) > 0)
+                                            {{ $stats['pending_inhouse'] }} request{{ $stats['pending_inhouse'] > 1 ? 's' : '' }} pending
+                                        @else
+                                            Manage developer assignments
+                                        @endif
+                                    </p>
+                                </div>
+                                <i class="fas fa-arrow-right text-purple-600 group-hover:translate-x-1 transition-transform"></i>
+                            </a>
                         </div>
                     </div>
 
