@@ -308,24 +308,6 @@ class Gig extends Model implements HasMedia
         return (bool) $this->assigned_to_inhouse;
     }
 
-    /**
-     * Accept an in-house developer assignment (transition to IN_PROGRESS)
-     * Similar to when a freelancer accepts a gig
-     * @param int $developerId
-     * @param string|null $notes
-     * @return bool
-     */
-    public function acceptInHouseDeveloperAssignment($developerId, $notes = null)
-    {
-        return $this->update([
-            'assigned_to_inhouse' => true,
-            'inhouse_developer_id' => $developerId,
-            'inhouse_assigned_at' => now(),
-            'inhouse_assignment_notes' => $notes,
-            'status' => GigStatus::IN_PROGRESS->value,
-        ]);
-    }
-
 
     // public function getAllImageUrls($conversion = 'large')
     // {

@@ -109,16 +109,16 @@ class ManageInHouseAssignments extends Component
         $gig = Gig::findOrFail($this->selectedGigId);
         $developer = User::findOrFail($this->selectedDeveloperId);
 
-        // Accept the in-house developer assignment and set gig to IN_PROGRESS
-        $gig->acceptInHouseDeveloperAssignment(
-            $this->selectedDeveloperId,
-            $gig->inhouse_assignment_notes ?? 'Assigned by admin'
-        );
+        // Update gig with developer assignment
+        $gig->update([
+            'inhouse_developer_id' => $this->selectedDeveloperId,
+            'inhouse_assigned_at' => now(),
+        ]);
 
         $this->dispatch('toast', [
             'type' => 'success',
-            'title' => 'Developer Assigned & Gig Started!',
-            'message' => "The gig '{$gig->title}' has been assigned to {$developer->name} and is now in progress."
+            'title' => 'Developer Assigned!',
+            'message' => "The gig '{$gig->title}' has been assigned to {$developer->name}."
         ]);
 
         $this->closeAssignmentModal();
