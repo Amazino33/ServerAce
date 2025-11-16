@@ -113,7 +113,13 @@ class ManageInHouseAssignments extends Component
         $gig->update([
             'inhouse_developer_id' => $this->selectedDeveloperId,
             'inhouse_assigned_at' => now(),
+            'status' => 'in_progress',
         ]);
+
+        // Reject all pending applications for this gig
+        $gig->applications()
+            ->where('status', 'pending')
+            ->update(['status' => 'rejected']);
 
         $this->dispatch('toast', [
             'type' => 'success',
