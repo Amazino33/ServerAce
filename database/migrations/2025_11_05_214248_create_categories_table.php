@@ -20,6 +20,8 @@ return new class extends Migration
             // ---- MENU FIELDS ----
             $table->boolean('in_menu')->default(false);
             $table->unsignedInteger('menu_order')->default(0);
+
+            $table->string('icon')->nullable();
             
             $table->timestamps();
         });

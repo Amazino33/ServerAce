@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Cache;
 
 class CategorySeeder extends Seeder
 {
@@ -18,30 +19,35 @@ class CategorySeeder extends Seeder
                 'name' => 'Web Development',
                 'description' => 'All kinds of web development services.',
                 'in_menu' => true,
+                'is_active' => true,
                 'menu_order' => 1,
             ],
             [
                 'name' => 'Graphic Design',
                 'description' => 'Creative graphic design solutions.',
                 'in_menu' => true,
+                'is_active' => true,
                 'menu_order' => 2,
             ],
             [
                 'name' => 'Digital Marketing',
                 'description' => 'Promote your business online.',
                 'in_menu' => true,
+                'is_active' => true,
                 'menu_order' => 3,
             ],
             [
                 'name' => 'Writing & Translation',
                 'description' => 'Professional writing and translation services.',
                 'in_menu' => true,
+                'is_active' => true,
                 'menu_order' => 4,
             ],
             [
                 'name' => 'Video & Animation',
                 'description' => 'Engaging video and animation content.',
                 'in_menu' => true,
+                'is_active' => true,
                 'menu_order' => 5,
             ],
         ];
@@ -49,5 +55,7 @@ class CategorySeeder extends Seeder
         foreach ($menu as $cat) {
             Category::create($cat);
         }
+
+        Cache::forget('menu_categories');
     }
 }

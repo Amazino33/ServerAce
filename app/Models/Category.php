@@ -12,9 +12,17 @@ class Category extends Model
 
     protected $fillable = [
         'name',
+        'slug',
         'description',
+        'icon',
         'in_menu',
+        'is_active',
         'menu_order',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'in_menu' => 'boolean',
     ];
 
     public function sluggable(): array
@@ -30,5 +38,10 @@ class Category extends Model
     public function gigs()
     {
         return $this->hasMany(Gig::class);
+    }
+
+    public function activeGigs()
+    {
+        return $this->hasMany(Gig::class)->live();
     }
 }
