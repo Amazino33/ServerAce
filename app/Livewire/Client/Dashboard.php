@@ -65,6 +65,23 @@ class Dashboard extends Component
     // COMPUTED PROPERTIES - Dashboard Stats
     // ===========================
     
+    public function getInProgressGigsProperty()
+    {
+        return Gig::where('client_id', auth()->id())
+            ->where(function($query) {
+                $query->where('status', GigStatus::IN_PROGRESS->value)
+                      ->orWhere('status', GigStatus::IN_PROGRESS);
+            })
+            ->with([
+                'inHouseDeveloper',
+                'applications' => function($query) {
+                    $query->where('status', 'accepted')->with('freelancer');
+                },
+                'category'
+            ])
+            ->latest('updated_at')
+            ->paginate(10);
+    }
     public function getStatsProperty()
     {
         $userId = auth()->id();
@@ -80,6 +97,13 @@ class Dashboard extends Component
             'total_applications' => GigApplication::whereHas('gig', function($query) use ($userId) {
                 $query->where('client_id', $userId);
             })->count(),
+            
+            'in_progress_gigs' => Gig::where('client_id', $userId)
+                ->where(function($query) {
+                    $query->where('status', GigStatus::IN_PROGRESS->value)
+                          ->orWhere('status', GigStatus::IN_PROGRESS);
+                })
+                ->count(), 
             'pending_applications' => GigApplication::whereHas('gig', function($query) use ($userId) {
                 $query->where('client_id', $userId);
             })->where('status', 'pending')->count(),
@@ -153,6 +177,43 @@ class Dashboard extends Component
             ->take(5)
             ->get();
     }
+
+    public function viewGigDetails($gigId)
+    {
+        return redirect()->route('gigs.show', $gigId);
+    }
+
+    public function viewFreelancerProfile($freelancerId)
+    {
+        // Implement based on your routes
+        return redirect()->route('gigs.index', $freelancerId);
+    }
+
+    public function markAsComplete($gigId)
+    {
+        $gig = Gig::where('id', $gigId)
+            ->where('client_id', auth()->id())
+            ->firstOrFail();
+
+        $gig->update([
+            'status' => GigStatus::COMPLETED,
+            'completed_at' => now(),
+        ]);
+
+        session()->flash('success', 'Gig marked as complete! You can now leave a review.');
+        
+        // TODO: Trigger payment release if you have escrow
+        // TODO: Send notification to freelancer/developer
+    }
+
+    public function openDisputeModal($gigId)
+    {
+        // Implement dispute functionality
+        session()->flash('info', 'Dispute feature coming soon!');
+    }
+
+
+
 
     // ===========================
     // ACTIONS - Tab Navigation
@@ -271,10 +332,7 @@ class Dashboard extends Component
     public function assignToInHouseDeveloper()
     {
         if (!$this->selectedGigId) {
-            $this->dispatch('toast', [
-                'type' => 'error',
-                'message' => 'No gig selected.'
-            ]);
+            session()->flash('error', 'No gig selected.');
             return;
         }
 
@@ -290,16 +348,11 @@ class Dashboard extends Component
             ->where('status', 'pending')
             ->update(['status' => 'rejected']);
 
-        $this->dispatch('toast', [
-            'type' => 'success',
-            'title' => 'Request Submitted!',
-            'message' => 'Your request to assign this gig to an in-house developer has been submitted. Our team will review and assign a developer soon.'
-        ]);
+        session()->flash('success', 'Request submitted! Your request to assign this gig to an in-house developer has been submitted. Our team will review and assign a developer soon.');
 
-        // Reset modal state and refresh the gigs list
+        // Reset modal state
         $this->inhouseNotes = '';
         $this->selectedGigId = null;
-        $this->resetPage(); // Reset pagination to show updated data
     }
 
     /**
@@ -321,6 +374,7 @@ class Dashboard extends Component
             'stats' => $this->stats,
             'gigs' => $this->activeTab === 'gigs' ? $this->myGigs : collect(),
             'applications' => $this->activeTab === 'applications' ? $this->allApplications : collect(),
+            'inProgressGigs' => $this->activeTab === 'in_progress' ? $this->inProgressGigs : collect(), // ADD THIS
             'gigsForFilter' => $this->myGigsForFilter,
             'recentGigs' => $this->recentGigs,
             'recentApplications' => $this->recentApplications,

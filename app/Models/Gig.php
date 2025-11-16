@@ -308,6 +308,38 @@ class Gig extends Model implements HasMedia
         return (bool) $this->assigned_to_inhouse;
     }
 
+    /**
+     * Get the accepted freelancer for this gig
+     * @return User|null
+     */
+    public function getAcceptedFreelancerAttribute()
+    {
+        $acceptedApp = $this->applications()->where('status', 'accepted')->first();
+        return $acceptedApp ? $acceptedApp->freelancer : null;
+    }
+
+    /**
+     * Get the worker assigned to this gig (either freelancer or in-house dev)
+     * @return User|null
+     */
+    public function getAssignedWorkerAttribute()
+    {
+        if ($this->inhouse_developer_id) {
+            return $this->inHouseDeveloper;
+        }
+        
+        return $this->acceptedFreelancer;
+    }
+
+    /**
+     * Check if gig has an assigned worker
+     * @return bool
+     */
+    public function hasAssignedWorker(): bool
+    {
+        return $this->inhouse_developer_id !== null || $this->acceptedFreelancer !== null;
+    }
+
 
     // public function getAllImageUrls($conversion = 'large')
     // {
