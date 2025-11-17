@@ -546,7 +546,7 @@
                                                                 d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
                                                             </path>
                                                         </svg>
-                                                        ${{ number_format($application->proposed_rate, 2) }}
+                                                        ${{ number_format($application->proposed_price, 2) }}
                                                     </span>
                                                     <span class="flex items-center text-xs text-gray-500">
                                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
@@ -683,7 +683,7 @@
                                                         @if($acceptedApp)
                                                             <p class="text-sm text-green-600 font-semibold mt-2">
                                                                 <i class="fas fa-dollar-sign mr-1"></i>
-                                                                Agreed Rate: ${{ number_format($acceptedApp->proposed_rate, 2) }}
+                                                                Agreed Rate: ${{ number_format($acceptedApp->proposed_price, 2) }}
                                                             </p>
                                                             <p class="text-sm text-gray-500 mt-1">
                                                                 <i class="fas fa-calendar-check mr-1"></i>
@@ -820,7 +820,7 @@
                             <p class="text-lg font-bold text-gray-900">{{ $selectedApplication->gig->title }}</p>
                             <p class="text-sm text-gray-600 mt-2">
                                 Proposed Rate: <span
-                                    class="font-bold text-green-600">${{ number_format($selectedApplication->proposed_rate, 2) }}</span>
+                                    class="font-bold text-green-600">${{ number_format($selectedApplication->proposed_price, 2) }}</span>
                             </p>
                         </div>
 
@@ -915,4 +915,5 @@
         @endif
     </div>
     <livewire:client.create-gig />
+    <livewire:client.payment-checkout />
 </div>

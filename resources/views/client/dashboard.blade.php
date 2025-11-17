@@ -145,7 +145,7 @@
                                         <p class="text-sm text-gray-600 mt-1">Applied to: {{ $application->gig->title }}</p>
                                         <p class="text-sm text-gray-500 mt-2">{{ Str::limit($application->cover_letter, 200) }}</p>
                                         <div class="flex items-center gap-4 mt-3">
-                                            <span class="text-sm text-gray-600">Proposed Rate: ${{ number_format($application->proposed_rate, 2) }}</span>
+                                            <span class="text-sm text-gray-600">Proposed Rate: ${{ number_format($application->proposed_price, 2) }}</span>
                                             <span class="text-sm text-gray-500">{{ $application->created_at->diffForHumans() }}</span>
                                         </div>
                                     </div>
@@ -197,7 +197,7 @@
                     </div>
                     <div class="mb-4">
                         <h4 class="font-semibold text-gray-900">Gig: {{ $selectedApplication->gig->title }}</h4>
-                        <p class="text-sm text-gray-600">Proposed Rate: ${{ number_format($selectedApplication->proposed_rate, 2) }}</p>
+                        <p class="text-sm text-gray-600">Proposed Rate: ${{ number_format($selectedApplication->proposed_price, 2) }}</p>
                     </div>
                     <div class="mb-4">
                         <h4 class="font-semibold text-gray-900 mb-2">Cover Letter</h4>
