@@ -22,6 +22,8 @@ class Dashboard extends Component
     public $selectedApplicationId = null;
     public $showApplicationModal = false;
     public $inhouseNotes = '';
+    public $recentGigs = [];
+    public $recentApplications = [];
     
     // Filters
     public $filterStatus = 'all'; // all, open, closed, in_progress
@@ -59,6 +61,23 @@ class Dashboard extends Component
             ->latest()
             ->take(5)
             ->get();
+    }
+
+    public function openPaymentModal($gigId, $applicationId)
+    {
+        // Verify this is the client's gig
+        $gig = Gig::findOrFail($gigId);
+        
+        if ($gig->client_id !== auth()->id()) {
+            session()->flash('error', 'Unauthorized action.');
+            return;
+        }
+        
+        // Dispatch event to open payment modal
+        $this->dispatch('openPaymentModal', 
+            gigId: $gigId, 
+            applicationId: $applicationId
+        );
     }
 
     // ===========================
@@ -363,6 +382,37 @@ class Dashboard extends Component
         $this->selectedGigId = $gigId;
         $this->inhouseNotes = '';
     }
+
+    public function acceptAndPay($applicationId)
+    {
+        $application = GigApplication::with(['gig', 'freelancer'])->findOrFail($applicationId);
+        
+        // Verify ownership
+        if ($application->gig->user_id !== auth()->id()) {
+            session()->flash('error', 'Unauthorized action.');
+            return;
+        }
+        
+        // Verify application is pending
+        if ($application->status !== 'pending') {
+            session()->flash('error', 'This application has already been processed.');
+            return;
+        }
+        
+        // Verify freelancer is onboarded
+        if (!$application->freelancer->stripe_onboarded) {
+            session()->flash('error', 'This freelancer has not set up their payment account yet.');
+            return;
+        }
+        
+        // Close the application modal first
+        $this->showApplicationModal = false;
+        
+        // Dispatch event to open payment modal
+        $this->dispatch('openPaymentModal', applicationId: $applicationId);
+    }
+
+
 
     // ===========================
     // RENDER

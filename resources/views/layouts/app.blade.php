@@ -12,8 +12,14 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+    <!-- Stripe.js - Load EARLY -->
+    <script src="https://js.stripe.com/v3/"></script>
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- Livewire Styles -->
+    @livewireStyles
 </head>
 
 <body class="font-sans antialiased">
@@ -30,8 +36,23 @@
         @endisset
 
         @if (session('status'))
-            <div class="flex justify-center mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <div class="flex justify-center mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+                role="alert">
                 <span class="block sm:inline">{{ session('status') }}</span>
+            </div>
+        @endif
+
+        @if (session('success'))
+            <div class="flex justify-center mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+                role="alert">
+                <span class="block sm:inline">{{ session('success') }}</span>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="flex justify-center mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                role="alert">
+                <span class="block sm:inline">{{ session('error') }}</span>
             </div>
         @endif
 
@@ -40,6 +61,9 @@
             {{ $slot }}
         </main>
     </div>
+<!-- Livewire Scripts -->
+@livewireScripts
+@stack('scripts')
 </body>
 
 </html>

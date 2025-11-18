@@ -25,6 +25,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'role',
+        'stripe_id',              // for Stripe customer ID
+        'stripe_account_id',      // for Stripe Connect account ID
+        'stripe_onboarded',
+        'stripe_onboarded_at',
     ];
 
     /**
@@ -102,6 +106,30 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->gigApplications()
                     ->where('gig_id', $gig->id)
                     ->exists();
+    }
+
+    /**
+     * Get freelancer's payouts
+     */
+    public function payouts()
+    {
+        return $this->hasMany(Payout::class, 'freelancer_id');
+    }
+    
+    /**
+     * Check if freelancer is onboarded with Stripe
+     */
+    public function isStripeOnboarded(): bool
+    {
+        return (bool) $this->stripe_onboarded;
+    }
+    
+    /**
+     * Check if user needs to set up payments
+     */
+    public function needsPaymentSetup(): bool
+    {
+        return $this->role->value === 'freelancer' && !$this->stripe_onboarded;
     }
 
 

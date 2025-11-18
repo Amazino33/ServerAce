@@ -136,6 +136,11 @@ class Gig extends Model implements HasMedia
         return $this->hasMany(GigApplication::class);
     }
 
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
+    }
+
 
     
     // =========================================

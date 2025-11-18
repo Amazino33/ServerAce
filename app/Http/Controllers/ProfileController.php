@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,5 +57,27 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function show(User $user)
+    {
+        // Load everything we need in one query
+        $user->load([
+            'gigs' => fn($q) => $q->where('status', 'open')->limit(6),
+            'completedGigs' => fn($q) => $q->where('status', 'completed'),
+            'reviewsReceived',
+            'reviewsGiven',
+        ]);
+
+        // Calculate stats
+        $stats = [
+            'total_earned' => $user->paymentsReceived()->where('status', 'released')->sum('freelancer_amount'),
+            'total_spent'  => $user->paymentsMade()->where('status', 'released')->sum('amount'),
+            'gigs_completed' => $user->completedGigs->count(),
+            'rating_avg' => $user->reviewsReceived->avg('rating') ?? 0,
+            'rating_count' => $user->reviewsReceived->count(),
+        ];
+
+        return view('profile.show', compact('user', 'stats'));
     }
 }

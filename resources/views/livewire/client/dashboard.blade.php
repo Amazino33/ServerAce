@@ -748,11 +748,29 @@
 
                                         <!-- Action Buttons -->
                                         <div class="flex gap-3 justify-end">
-                                            <button wire:click="markAsComplete({{ $gig->id }})" 
-                                                    wire:confirm="Mark this gig as completed? This action cannot be undone."
-                                                    class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition">
-                                                <i class="fas fa-check-circle mr-2"></i>Mark as Complete
-                                            </button>
+                                            @php
+                                                // Find the payment for this gig (there should be only one)
+                                                $payment = $gig->payment()->first();
+                                            @endphp
+
+                                            @if($payment && $payment->status === 'held')
+                                                <form 
+                                                    action="{{ route('client.payment.release', $payment) }}" 
+                                                    method="POST"
+                                                    onsubmit="return confirm('Release ${{ number_format($payment->freelancer_amount, 2) }} to the freelancer?\n\nThis cannot be undone.');"
+                                                    class="inline">
+                                                    @csrf
+                                                    <button type="submit" 
+                                                            class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg transition shadow-lg">
+                                                        <i class="fas fa-check-circle mr-2"></i>
+                                                        Mark as Complete & Release Payment
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <button disabled class="px-8 py-3 bg-gray-400 text-white font-bold rounded-lg cursor-not-allowed">
+                                                    No Payment to Release
+                                                </button>
+                                            @endif
                                             <button wire:click="openDisputeModal({{ $gig->id }})" 
                                                     class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition">
                                                 <i class="fas fa-exclamation-triangle mr-2"></i>Report Issue
@@ -850,10 +868,10 @@
                             class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition">
                             <i class="fas fa-times mr-2"></i>Reject
                         </button>
-                        <button wire:click="acceptApplication({{ $selectedApplication->id }})"
-                            wire:confirm="This will reject all other applications for this gig. Continue?"
-                            class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold transition">
-                            <i class="fas fa-check mr-2"></i>Accept & Hire
+                        <button wire:click="openPaymentModal({{ $selectedApplication->gig_id }}, {{ $selectedApplication->id }})"
+                                wire:confirm="You will be charged ${{ number_format($selectedApplication->proposed_price, 2) }}. Continue?"
+                                class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold transition">
+                            <i class="fas fa-credit-card mr-2"></i>Accept & Pay ${{ number_format($selectedApplication->proposed_price, 2) }}
                         </button>
                     </div>
                 </div>
@@ -915,5 +933,6 @@
         @endif
     </div>
     <livewire:client.create-gig />
+    <!-- Add Payment Checkout Component -->
     <livewire:client.payment-checkout />
 </div>
