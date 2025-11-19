@@ -5,7 +5,7 @@
             <div class="flex items-center">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-2 group">
+                    <a href="{{ route('home') }}" class="flex items-center space-x-2 group">
                         <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-blue-600 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-all duration-300 shadow-lg">
                             <span class="text-white font-bold text-xl">S</span>
                         </div>
@@ -26,58 +26,6 @@
                        class="px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 {{ request()->routeIs('browse') ? 'bg-green-50 text-green-700' : 'text-gray-700 hover:bg-gray-50 hover:text-green-600' }}">
                         <i class="fas fa-search mr-2"></i>Browse Gigs
                     </a>
-
-                    @php
-                        $menuCat = Cache::remember('menu_categories', now()->addHours(6), function () {
-                            return App\Models\Category::where('in_menu', true)
-                                ->orderBy('menu_order')
-                                ->orderBy('name')
-                                ->get();
-                        });
-                    @endphp
-
-                    <!-- Categories Dropdown -->
-                    <div class="relative" x-data="{ open: false }">
-                        <button @click="open = !open" @click.away="open = false"
-                            class="px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-gray-700 hover:bg-gray-50 hover:text-green-600 inline-flex items-center">
-                            <i class="fas fa-th-large mr-2"></i>Categories
-                            <svg class="ml-2 h-4 w-4 transition-transform duration-200" :class="{'rotate-180': open}" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                            </svg>
-                        </button>
-
-                        <div x-show="open" 
-                             x-transition:enter="transition ease-out duration-200"
-                             x-transition:enter-start="opacity-0 scale-95"
-                             x-transition:enter-end="opacity-100 scale-100"
-                             x-transition:leave="transition ease-in duration-150"
-                             x-transition:leave-start="opacity-100 scale-100"
-                             x-transition:leave-end="opacity-0 scale-95"
-                             class="absolute left-0 mt-2 w-64 rounded-2xl shadow-2xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden"
-                             style="display: none;">
-                            <div class="p-2 max-h-96 overflow-y-auto">
-                                @foreach ($menuCat as $cat)
-                                    <a href="{{ route('category.show', $cat->slug) }}"
-                                       class="flex items-center px-4 py-3 text-sm rounded-lg transition-all duration-200 {{ request()->is('categories/' . $cat->slug) ? 'bg-green-50 text-green-700 font-semibold' : 'text-gray-700 hover:bg-gray-50 hover:text-green-600' }}">
-                                        <i class="fas fa-folder mr-3 text-gray-400"></i>
-                                        {{ $cat->name }}
-                                    </a>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-
-                    @auth
-                    <a href="{{ route('post-gig') }}" 
-                       class="px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 {{ request()->routeIs('post-gig') ? 'bg-green-50 text-green-700' : 'text-gray-700 hover:bg-gray-50 hover:text-green-600' }}">
-                        <i class="fas fa-plus-circle mr-2"></i>Post a Gig
-                    </a>
-
-                    <a href="{{ route('dashboard') }}" 
-                       class="px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 {{ request()->routeIs('dashboard') ? 'bg-green-50 text-green-700' : 'text-gray-700 hover:bg-gray-50 hover:text-green-600' }}">
-                        <i class="fas fa-chart-line mr-2"></i>Dashboard
-                    </a>
-                    @endauth
                 </div>
             </div>
 
@@ -110,10 +58,21 @@
                              class="absolute right-0 mt-2 w-56 rounded-2xl shadow-2xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden"
                              style="display: none;">
                             <div class="p-2">
-                                <a href="{{ route('profile.edit') }}"
+                                <a href="{{ route('dashboard') }}" 
+                                    class="flex items-center px-4 py-3 text-sm rounded-lg text-gray-700 hover:bg-gray-50 hover:text-green-600 transition-all duration-200">
+                                    <i class="fas fa-chart-line mr-3 text-gray-400"></i>Dashboard
+                                </a>
+
+                                <a href="{{ route('profile.show', Auth::user()->username) }}"
                                    class="flex items-center px-4 py-3 text-sm rounded-lg text-gray-700 hover:bg-gray-50 hover:text-green-600 transition-all duration-200">
                                     <i class="fas fa-user-circle mr-3 text-gray-400"></i>
                                     Profile
+                                </a>
+
+                                <a href="{{ route('profile.edit') }}"
+                                   class="flex items-center px-4 py-3 text-sm rounded-lg text-gray-700 hover:bg-gray-50 hover:text-green-600 transition-all duration-200">
+                                    <i class="fas fa-pencil mr-3 text-gray-400"></i>
+                                    Edit Profile
                                 </a>
                                 
                                 <hr class="my-2 border-gray-100">
@@ -175,42 +134,6 @@
                class="flex items-center px-4 py-3 text-sm font-semibold rounded-lg transition-all duration-200 {{ request()->routeIs('browse') ? 'bg-green-50 text-green-700' : 'text-gray-700 hover:bg-gray-50' }}">
                 <i class="fas fa-search mr-3 w-5"></i>Browse Gigs
             </a>
-
-            <!-- Mobile Categories -->
-            <div x-data="{ catOpen: false }">
-                <button @click="catOpen = !catOpen"
-                        class="w-full flex items-center justify-between px-4 py-3 text-sm font-semibold rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200">
-                    <span><i class="fas fa-th-large mr-3 w-5"></i>Categories</span>
-                    <svg class="h-4 w-4 transition-transform duration-200" :class="{'rotate-180': catOpen}" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                    </svg>
-                </button>
-                
-                <div x-show="catOpen" 
-                     x-transition
-                     class="ml-4 mt-1 space-y-1"
-                     style="display: none;">
-                    @foreach ($menuCat as $cat)
-                        <a href="{{ route('category.show', $cat->slug) }}"
-                           class="flex items-center px-4 py-2 text-sm rounded-lg transition-all duration-200 {{ request()->is('categories/' . $cat->slug) ? 'bg-green-50 text-green-700 font-semibold' : 'text-gray-600 hover:bg-gray-50' }}">
-                            <i class="fas fa-folder mr-3 text-xs"></i>
-                            {{ $cat->name }}
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-
-            @auth
-            <a href="{{ route('post-gig') }}" 
-               class="flex items-center px-4 py-3 text-sm font-semibold rounded-lg transition-all duration-200 {{ request()->routeIs('post-gig') ? 'bg-green-50 text-green-700' : 'text-gray-700 hover:bg-gray-50' }}">
-                <i class="fas fa-plus-circle mr-3 w-5"></i>Post a Gig
-            </a>
-
-            <a href="{{ route('dashboard') }}" 
-               class="flex items-center px-4 py-3 text-sm font-semibold rounded-lg transition-all duration-200 {{ request()->routeIs('dashboard') ? 'bg-green-50 text-green-700' : 'text-gray-700 hover:bg-gray-50' }}">
-                <i class="fas fa-chart-line mr-3 w-5"></i>Dashboard
-            </a>
-            @endauth
         </div>
 
         @auth

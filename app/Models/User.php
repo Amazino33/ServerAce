@@ -22,6 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
         'role',
@@ -154,5 +155,35 @@ class User extends Authenticatable implements MustVerifyEmail
     public function postedGigs()
     {
         return $this->hasMany(Gig::class, 'client_id');
+    }
+
+    public function gigs()
+    {
+        return $this->hasMany(Gig::class, 'client_id');
+    }
+
+    public function paymentsReceived()
+    {
+        return $this->hasMany(Payment::class, 'freelancer_id');
+    }
+
+    public function paymentsMade()
+    {
+        return $this->hasMany(Payment::class, 'client_id');
+    }
+
+    public function completedGigs()
+    {
+        return $this->hasMany(Gig::class, 'client_id')->where('status', 'completed');
+    }
+
+    public function reviewsReceived()
+    {
+        return $this->morphMany(Review::class, 'reviewable');
+    }
+
+    public function reviewsGiven()
+    {
+        return $this->hasMany(Review::class, 'reviewer_id');
     }
 }
