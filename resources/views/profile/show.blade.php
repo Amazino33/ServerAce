@@ -65,6 +65,21 @@
                 </div>
             </div>
 
+            <!-- Portfolio -->
+            @if($user->getMedia('portfolio')->count() > 0)
+                <div class="bg-white rounded-xl shadow p-6">
+                    <h3 class="text-xl font-bold mb-4">Portfolio</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        @foreach($user->getMedia('portfolio') as $media)
+                            <a href="{{ $media->getUrl() }}" target="_blank">
+                                <img src="{{ $media->getUrl('thumb') }}" 
+                                    class="w-full h-48 object-cover rounded-lg hover:scale-105 transition">
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 <!-- Rating -->

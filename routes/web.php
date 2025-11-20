@@ -91,6 +91,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
+    Route::post('/profile/portfolio', [ProfileController::class, 'uploadPortfolio'])->name('profile.portfolio.upload');
+    Route::delete('/profile/portfolio/{media}', [ProfileController::class, 'deletePortfolio'])->name('profile.portfolio.delete');
+
 
     // Admin-only areas
     Route::prefix('admin')->middleware('role:'.UserRole::ADMIN->value)->name('admin.')->group(function () {

@@ -29,13 +29,57 @@ class ProfileController extends Controller
     {
         $request->user()->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $user = auth()->user();
+
+        // Handle avatar upload
+        if ($request->hasFile('avatar')) {
+            $validated['avatar'] = $request->file('avatar')->store('avatars', 'public');
         }
 
-        $request->user()->save();
+        foreach ($request->file('portfolio') as $image) {
+            auth()->user()->addMedia($image)->toMediaCollection('portfolio');
+        }   
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    return back()->with('success', 'Portfolio images uploaded!');
+
+        // Clean skills (remove empty)
+        if (isset($validated['skills'])) {
+            $validated['skills'] = array_filter($validated['skills']);
+        }
+
+        $user->update($validated);
+
+        // Update profile completion (simple version)
+        $completion = 30;
+        if ($user->bio) $completion += 20;
+        if ($user->location || $user->phone) $completion += 10;
+        if ($user->avatar !== 'avatars/default.png') $completion += 15;
+        if ($user->role === 'freelancer' && $user->title && $user->skills) $completion += 25;
+        $user->update(['profile_completion' => min(100, $completion)]);
+
+        return back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function uploadPortfolio(Request $request)
+    {
+        $request->validate([
+            'portfolio.*' => 'image|mimes:jpeg,png,webp|max:5120',
+        ]);
+
+        foreach ($request->file('portfolio') as $image) {
+            auth()->user()->addMedia($image)->toMediaCollection('portfolio');
+        }
+
+        return back()->with('success', 'Portfolio images uploaded!');
+    }
+
+    public function deletePortfolio(\Spatie\MediaLibrary\MediaCollections\Models\Media $media)
+    {
+        if ($media->model_id !== auth()->id()) abort(403);
+
+        $media->delete();
+
+        return response()->json(['success' => true]);
     }
 
     /**

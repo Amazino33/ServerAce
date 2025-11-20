@@ -9,11 +9,13 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -29,7 +31,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'stripe_id',              // for Stripe customer ID
         'stripe_account_id',      // for Stripe Connect account ID
         'stripe_onboarded',
-        'stripe_onboarded_at',
+        'stripe_onboarded_at', 'location', 'phone', 'bio', 'avatar',
+        'profile_public', 'available_for_work',
+        'title', 'hourly_rate', 'experience_level', 'skills', 'portfolio_description',
+        'company_name', 'industry', 'company_size',
+        'website', 'linkedin_url', 'github_url', 'twitter_url',
     ];
 
     /**
@@ -42,6 +48,23 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
     ];
 
+    // Define the collection
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('portfolio')
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp'])
+            ->singleFile(false); // Multiple images
+    }
+
+    // Optional: conversions (thumbnails)
+    public function registerMediaConversions(\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(400)
+            ->height(300)
+            ->sharpen(10);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -53,6 +76,10 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'role' => UserRole::class,
+            'skills' => 'array',
+            'profile_public' => 'boolean',
+            'available_for_work' => 'boolean',
+            'hourly_rate' => 'decimal:2',
         ];
     }
 
