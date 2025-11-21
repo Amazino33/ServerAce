@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
@@ -35,7 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         'profile_public', 'available_for_work',
         'title', 'hourly_rate', 'experience_level', 'skills', 'portfolio_description',
         'company_name', 'industry', 'company_size',
-        'website', 'linkedin_url', 'github_url', 'twitter_url',
+        'website', 'linkedin_url', 'github_url', 'twitter_url', 'portfolio'
     ];
 
     /**
@@ -53,16 +54,18 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     {
         $this->addMediaCollection('portfolio')
             ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp'])
-            ->singleFile(false); // Multiple images
+            ->useDisk('public');
     }
 
     // Optional: conversions (thumbnails)
-    public function registerMediaConversions(\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
+    public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')
             ->width(400)
             ->height(300)
-            ->sharpen(10);
+            ->sharpen(10)
+            ->performOnCollections('portfolio')
+            ->nonQueued();
     }
 
     /**

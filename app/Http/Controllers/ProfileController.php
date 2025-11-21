@@ -25,53 +25,68 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
 
-        $user = auth()->user();
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+            'location' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'bio' => 'nullable|string|max:1000',
+            'title' => 'nullable|string|max:255',
+            'hourly_rate' => 'nullable|numeric|min:0',
+            'experience_level' => 'nullable|in:beginner,intermediate,expert',
+            'skills' => 'nullable|array',
+            'skills.*' => 'nullable|string|max:100',
+            'portfolio_description' => 'nullable|string|max:2000',
+            'company_name' => 'nullable|string|max:255',
+            'industry' => 'nullable|string|max:255',
+            'company_size' => 'nullable|string|max:50',
+            'website' => 'nullable|url|max:255',
+            'linkedin_url' => 'nullable|url|max:255',
+            'github_url' => 'nullable|url|max:255',
+            'twitter_url' => 'nullable|url|max:255',
+            'profile_public' => 'sometimes|boolean',
+            'available_for_work' => 'sometimes|boolean',
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
+        ]);
 
-        // Handle avatar upload
         if ($request->hasFile('avatar')) {
             $validated['avatar'] = $request->file('avatar')->store('avatars', 'public');
         }
 
-        foreach ($request->file('portfolio') as $image) {
-            auth()->user()->addMedia($image)->toMediaCollection('portfolio');
-        }   
-
-    return back()->with('success', 'Portfolio images uploaded!');
-
-        // Clean skills (remove empty)
         if (isset($validated['skills'])) {
             $validated['skills'] = array_filter($validated['skills']);
         }
 
+        $validated['profile_public'] = $request->has('profile_public');
+        $validated['available_for_work'] = $request->has('available_for_work');
+
         $user->update($validated);
 
-        // Update profile completion (simple version)
         $completion = 30;
-        if ($user->bio) $completion += 20;
-        if ($user->location || $user->phone) $completion += 10;
-        if ($user->avatar !== 'avatars/default.png') $completion += 15;
-        if ($user->role === 'freelancer' && $user->title && $user->skills) $completion += 25;
-        $user->update(['profile_completion' => min(100, $completion)]);
+        $completion += $user->bio ? 20 : 0;
+        $completion += $user->location || $user->phone ? 10 : 0;
+        $completion += $user->avatar && $user->avatar !== 'avatars/default.png' ? 15 : 0;
+        $completion += $user->role === 'freelancer' && $user->title && count($user->skills ?? []) > 0 ? 25 : 0;
+        $user->profile_completion = min(100, $completion);
+        $user->save();
 
-        return back()->with('success', 'Profile updated successfully!');
+        return back()->with('success', 'Profile updated successfully! 🎉');
     }
 
     public function uploadPortfolio(Request $request)
-    {
-        $request->validate([
-            'portfolio.*' => 'image|mimes:jpeg,png,webp|max:5120',
-        ]);
+{
+    $request->validate(['portfolio.*' => 'image|mimes:jpg,jpeg,png,gif,webp|max:5120']);
 
-        foreach ($request->file('portfolio') as $image) {
-            auth()->user()->addMedia($image)->toMediaCollection('portfolio');
-        }
-
-        return back()->with('success', 'Portfolio images uploaded!');
+    foreach ($request->file('portfolio') as $file) {
+        auth()->user()->addMedia($file)->toMediaCollection('portfolio');
     }
+
+    return response()->json(['success' => true]);
+}
 
     public function deletePortfolio(\Spatie\MediaLibrary\MediaCollections\Models\Media $media)
     {
@@ -79,7 +94,7 @@ class ProfileController extends Controller
 
         $media->delete();
 
-        return response()->json(['success' => true]);
+        return back()->with('success', 'Portfolio image deleted successfully! 🎉');
     }
 
     /**

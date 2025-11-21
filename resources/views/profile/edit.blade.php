@@ -56,7 +56,6 @@
 
         <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            @method('PATCH')
 
             <div class="grid lg:grid-cols-3 gap-8">
                 <!-- Left Column - Avatar & Visibility -->
@@ -384,43 +383,79 @@
                                 </div>
 
                                 <!-- Portfolio Images -->
-                                <div class="bg-white rounded-xl shadow-lg p-6">
-                                    <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                                        <i class="fas fa-images text-green-600 mr-2"></i>
-                                        Portfolio Images (up to 12)
-                                    </h3>
+<div class="bg-white rounded-xl shadow-lg p-6 mt-6">
+    <h3 class="text-xl font-bold text-gray-900 mb-6">
+        Portfolio (up to 12 images)
+    </h3>
 
-                                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-green-500 transition">
-                                        <input type="file" 
-                                            name="portfolio[]" 
-                                            multiple 
-                                            accept="image/*"
-                                            id="portfolio-upload"
-                                            class="hidden">
-                                        <label for="portfolio-upload" class="cursor-pointer">
-                                            <i class="fas fa-cloud-upload-alt text-6xl text-gray-400 mb-4 block"></i>
-                                            <p class="text-lg font-semibold text-gray-700">Drop images here or click to upload</p>
-                                            <p class="text-sm text-gray-500 mt-2">JPG, PNG, WebP · Max 5MB each</p>
-                                        </label>
-                                    </div>
+    <!-- Upload Zone -->
+    <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-green-500 transition cursor-pointer"
+         onclick="document.getElementById('portfolio-input').click()">
+        <input type="file" 
+               id="portfolio-input" 
+               name="portfolio[]" 
+               multiple 
+               accept="image/*" 
+               class="hidden">
+        <i class="fas fa-cloud-upload-alt text-6xl text-gray-400 mb-4"></i>
+        <p class="text-lg font-semibold text-gray-700">Drop images here or click to upload</p>
+        <p class="text-sm text-gray-500">JPG, PNG, WebP • Max 5MB each</p>
+    </div>
 
-                                    <!-- Preview Grid -->
-                                    <div id="portfolio-preview" class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                                        @foreach(auth()->user()->getMedia('portfolio') as $media)
-                                            <div class="relative group portfolio-item" data-id="{{ $media->id }}">
-                                                <img src="{{ $media->getUrl('thumb') }}" 
-                                                    class="w-full h-48 object-cover rounded-lg shadow">
-                                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition flex items-center justify-center opacity-0 group-hover:opacity-100">
-                                                    <button type="button" 
-                                                            onclick="removePortfolioImage({{ $media->id }}, this)"
-                                                            class="bg-red-600 hover:bg-red-700 text-white p-3 rounded-full">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
+    <!-- Preview Grid -->
+    <div id="portfolio-preview" class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+        @foreach(auth()->user()->getMedia('portfolio') as $media)
+            <div class="relative group portfolio-item" data-id="{{ $media->id }}">
+                <img src="{{ $media->getUrl('thumb') }}" 
+                     class="w-full h-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition">
+                <div class="absolute inset-0 bg-black bg-opacity-70 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                    <form action="{{ route('profile.portfolio.delete', $media) }}" method="POST" class="inline">
+                        @csrf @method('DELETE')
+                        <button type="submit" 
+                                class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-full transition">
+                            <i class="fas fa-trash text-xl"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+
+<script>
+document.getElementById('portfolio-input').addEventListener('change', function(e) {
+    const files = e.target.files;
+    const preview = document.getElementById('portfolio-preview');
+
+    if (files.length === 0) return;
+
+    const formData = new FormData();
+    for (let file of files) {
+        if (file.size > 5 * 1024 * 1024) {
+            alert('Too big: ' + file.name);
+            continue;
+        }
+        formData.append('portfolio[]', file);
+    }
+
+    fetch('{{ route('profile.portfolio.upload') }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        location.reload();
+    })
+    .catch(err => {
+        alert('Upload failed. Please try again.');
+        console.error(err);
+    });
+});
+</script>
                             </div>
                         </div>
                     @else
@@ -700,5 +735,6 @@ function removePortfolioImage(mediaId, button) {
 }
 
 document.getElementById('portfolio-upload').addEventListener('change', previewPortfolioImages);
+
 </script>
 </x-app-layout>
