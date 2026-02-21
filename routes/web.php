@@ -94,6 +94,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/profile/portfolio', [ProfileController::class, 'uploadPortfolio'])->name('profile.portfolio.upload');
     Route::delete('/profile/portfolio/{media}', [ProfileController::class, 'deletePortfolio'])->name('profile.portfolio.delete');
 
+    Route::post('/profile/avatar', [ProfileController::class, 'uploadAvatar'])->name('profile.avatar.upload');
 
     // Admin-only areas
     Route::prefix('admin')->middleware('role:'.UserRole::ADMIN->value)->name('admin.')->group(function () {

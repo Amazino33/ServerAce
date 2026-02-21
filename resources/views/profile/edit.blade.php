@@ -67,24 +67,28 @@
                             <i class="fas fa-camera text-green-600 mr-2"></i>
                             Profile Picture
                         </h3>
-                        
+
                         <div class="text-center">
                             <div class="relative inline-block">
+                                <!-- Live Preview -->
                                 <img id="avatar-preview" 
-                                     src="{{ auth()->user()->avatar_url }}" 
-                                     alt="{{ auth()->user()->name }}"
-                                     class="w-32 h-32 rounded-full border-4 border-gray-200 object-cover mx-auto mb-4">
-                                <label for="avatar" class="absolute bottom-2 right-2 bg-green-600 hover:bg-green-700 text-white rounded-full p-2 cursor-pointer transition">
-                                    <i class="fas fa-camera"></i>
+                                    src="{{ auth()->user()->avatar ? Storage::url(auth()->user()->avatar) : asset('images/default-avatar.png') }}" 
+                                    alt="{{ auth()->user()->name }}"
+                                    class="w-40 h-40 rounded-full border-8 border-white shadow-2xl object-cover">
+
+                                <!-- Upload Button (floating) -->
+                                <label for="avatar-upload" class="absolute bottom-4 right-4 bg-green-600 hover:bg-green-700 text-white rounded-full p-4 cursor-pointer shadow-lg transition transform hover:scale-110">
+                                    <i class="fas fa-camera text-xl"></i>
                                     <input type="file" 
-                                           id="avatar" 
-                                           name="avatar" 
-                                           accept="image/*"
-                                           class="hidden"
-                                           onchange="previewAvatar(event)">
+                                        id="avatar-upload" 
+                                        name="avatar" 
+                                        accept="image/*"
+                                        class="hidden"
+                                        onchange="uploadAvatar(event)">
                                 </label>
                             </div>
-                            <p class="text-sm text-gray-500">JPG, PNG or GIF (max. 2MB)</p>
+
+                            <p class="text-sm text-gray-500 mt-4">JPG, PNG or WebP • Max 2MB • Recommended 400x400px</p>
                             @error('avatar')
                                 <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
                             @enderror
@@ -383,79 +387,79 @@
                                 </div>
 
                                 <!-- Portfolio Images -->
-<div class="bg-white rounded-xl shadow-lg p-6 mt-6">
-    <h3 class="text-xl font-bold text-gray-900 mb-6">
-        Portfolio (up to 12 images)
-    </h3>
+                                <div class="md:col-span-2 bg-white rounded-xl shadow-lg p-6 mt-6">
+                                    <h3 class="text-xl font-bold text-gray-900 mb-6">
+                                        Portfolio (up to 12 images)
+                                    </h3>
 
-    <!-- Upload Zone -->
-    <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-green-500 transition cursor-pointer"
-         onclick="document.getElementById('portfolio-input').click()">
-        <input type="file" 
-               id="portfolio-input" 
-               name="portfolio[]" 
-               multiple 
-               accept="image/*" 
-               class="hidden">
-        <i class="fas fa-cloud-upload-alt text-6xl text-gray-400 mb-4"></i>
-        <p class="text-lg font-semibold text-gray-700">Drop images here or click to upload</p>
-        <p class="text-sm text-gray-500">JPG, PNG, WebP • Max 5MB each</p>
-    </div>
+                                    <!-- Upload Zone -->
+                                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-green-500 transition cursor-pointer"
+                                        onclick="document.getElementById('portfolio-input').click()">
+                                        <input type="file" 
+                                            id="portfolio-input" 
+                                            name="portfolio[]" 
+                                            multiple 
+                                            accept="image/*" 
+                                            class="hidden">
+                                        <i class="fas fa-cloud-upload-alt text-6xl text-gray-400 mb-4"></i>
+                                        <p class="text-lg font-semibold text-gray-700">Drop images here or click to upload</p>
+                                        <p class="text-sm text-gray-500">JPG, PNG, WebP • Max 5MB each</p>
+                                    </div>
 
-    <!-- Preview Grid -->
-    <div id="portfolio-preview" class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-        @foreach(auth()->user()->getMedia('portfolio') as $media)
-            <div class="relative group portfolio-item" data-id="{{ $media->id }}">
-                <img src="{{ $media->getUrl('thumb') }}" 
-                     class="w-full h-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition">
-                <div class="absolute inset-0 bg-black bg-opacity-70 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                    <form action="{{ route('profile.portfolio.delete', $media) }}" method="POST" class="inline">
-                        @csrf @method('DELETE')
-                        <button type="submit" 
-                                class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-full transition">
-                            <i class="fas fa-trash text-xl"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        @endforeach
-    </div>
-</div>
+                                    <!-- Preview Grid -->
+                                    <div id="portfolio-preview" class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 overflow-y-auto">
+                                        @foreach(auth()->user()->getMedia('portfolio') as $media)
+                                            <div class="relative group portfolio-item" data-id="{{ $media->id }}">
+                                                <img src="{{ $media->getUrl('thumb') }}" 
+                                                    class="w-full h-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition">
+                                                <div class="absolute inset-0 bg-black bg-opacity-70 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                                                    <form action="{{ route('profile.portfolio.delete', $media) }}" method="POST" class="inline">
+                                                        @csrf @method('DELETE')
+                                                        <button type="submit" 
+                                                                class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-full transition">
+                                                            <i class="fas fa-trash text-xl"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
 
-<script>
-document.getElementById('portfolio-input').addEventListener('change', function(e) {
-    const files = e.target.files;
-    const preview = document.getElementById('portfolio-preview');
+                                <script>
+                                document.getElementById('portfolio-input').addEventListener('change', function(e) {
+                                    const files = e.target.files;
+                                    const preview = document.getElementById('portfolio-preview');
 
-    if (files.length === 0) return;
+                                    if (files.length === 0) return;
 
-    const formData = new FormData();
-    for (let file of files) {
-        if (file.size > 5 * 1024 * 1024) {
-            alert('Too big: ' + file.name);
-            continue;
-        }
-        formData.append('portfolio[]', file);
-    }
+                                    const formData = new FormData();
+                                    for (let file of files) {
+                                        if (file.size > 5 * 1024 * 1024) {
+                                            alert('Too big: ' + file.name);
+                                            continue;
+                                        }
+                                        formData.append('portfolio[]', file);
+                                    }
 
-    fetch('{{ route('profile.portfolio.upload') }}', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        location.reload();
-    })
-    .catch(err => {
-        alert('Upload failed. Please try again.');
-        console.error(err);
-    });
-});
-</script>
+                                    fetch('{{ route('profile.portfolio.upload') }}', {
+                                        method: 'POST',
+                                        body: formData,
+                                        headers: {
+                                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                            'Accept': 'application/json'
+                                        }
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        location.reload();
+                                    })
+                                    .catch(err => {
+                                        alert('Upload failed. Please try again.');
+                                        console.error(err);
+                                    });
+                                });
+                                </script>
                             </div>
                         </div>
                     @else
@@ -649,18 +653,56 @@ document.getElementById('portfolio-input').addEventListener('change', function(e
 </div>
 
 <script>
-// Avatar preview
-function previewAvatar(event) {
+function uploadAvatar(event) {
     const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('avatar-preview').src = e.target.result;
-        }
-        reader.readAsDataURL(file);
+    if (!file) return;
+
+    // Validate size
+    if (file.size > 2 * 1024 * 1024) {
+        alert('Image too large! Max 2MB');
+        return;
     }
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    // Show loading spinner
+    const preview = document.getElementById('avatar-preview');
+    preview.src = URL.createObjectURL(file); // instant preview
+
+    fetch('{{ route("profile.avatar.upload") }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            preview.src = data.avatar_url + '?t=' + new Date().getTime(); // bust cache
+            showToast('Avatar updated successfully! 🎉', 'success');
+        } else {
+            alert(data.message || 'Upload failed');
+            location.reload();
+        }
+    })
+    .catch(() => {
+        alert('Upload failed. Please try again.');
+        location.reload();
+    });
 }
 
+function showToast(message, type = 'success') {
+    // Simple toast (you can replace with SweetAlert2 or your toast system)
+    const toast = document.createElement('div');
+    toast.className = `fixed bottom-8 right-8 px-6 py-4 rounded-lg shadow-2xl text-white font-semibold z-50 transition-all ${
+        type === 'success' ? 'bg-green-600' : 'bg-red-600'
+    }`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 4000);
+}
 // Skills management
 function addSkill() {
     const container = document.getElementById('skills-container');

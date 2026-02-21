@@ -4,7 +4,7 @@ namespace App\Enums;
 
 enum GigStatus: string
 {
-    case CLOSED = 'closed';
+    case DRAFT = 'draft';
     case OPEN = 'open';
     case IN_PROGRESS = 'in_progress';
     case COMPLETED = 'completed';

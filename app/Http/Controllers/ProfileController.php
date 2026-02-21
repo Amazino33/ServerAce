@@ -77,16 +77,39 @@ class ProfileController extends Controller
         return back()->with('success', 'Profile updated successfully! 🎉');
     }
 
-    public function uploadPortfolio(Request $request)
-{
-    $request->validate(['portfolio.*' => 'image|mimes:jpg,jpeg,png,gif,webp|max:5120']);
+    public function uploadAvatar(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:2048'
+        ]);
 
-    foreach ($request->file('portfolio') as $file) {
-        auth()->user()->addMedia($file)->toMediaCollection('portfolio');
+        $user = auth()->user();
+
+        // Delete old avatar if exists and not default
+        if ($user->avatar && $user->avatar !== 'avatars/default.png') {
+            Storage::disk('public')->delete($user->avatar);
+        }
+
+        $path = $request->file('avatar')->store('avatars', 'public');
+
+        $user->update(['avatar' => $path]);
+
+        return response()->json([
+            'success' => true,
+            'avatar_url' => Storage::url($path)
+        ]);
     }
 
-    return response()->json(['success' => true]);
-}
+    public function uploadPortfolio(Request $request)
+    {   
+        $request->validate(['portfolio.*' => 'image|mimes:jpg,jpeg,png,gif,webp|max:5120']);
+
+        foreach ($request->file('portfolio') as $file) {
+                auth()->user()->addMedia($file)->toMediaCollection('portfolio');
+        }
+
+        return response()->json(['success' => true]);
+    }
 
     public function deletePortfolio(\Spatie\MediaLibrary\MediaCollections\Models\Media $media)
     {
