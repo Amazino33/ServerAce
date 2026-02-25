@@ -86,7 +86,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         ];
     }
 
-    
+
     // =========================================
     // HELPER METHODS
     // =========================================
@@ -146,7 +146,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     {
         return $this->hasMany(Payout::class, 'freelancer_id');
     }
-    
+
     /**
      * Check if freelancer is onboarded with Stripe
      */
@@ -154,7 +154,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     {
         return (bool) $this->stripe_onboarded;
     }
-    
+
     /**
      * Check if user needs to set up payments
      */
@@ -164,7 +164,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     }
 
 
-    
+
     // =========================================
     // RELATIONSHIPS
     // =========================================
@@ -215,5 +215,26 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     public function reviewsGiven()
     {
         return $this->hasMany(Review::class, 'reviewer_id');
+    }
+
+
+    /**
+     * Many-to-many relationship with agencies. A user can belong to multiple agencies, and an agency can have multiple users.
+     */
+    public function agencies()
+    {
+        return $this->belongsToMany(Agency::class)->withPivot('role')->withTimestamps();
+    }
+
+    /**
+     * A handy helper method for our logic later
+     */
+    public function canJoinNewAgency(): bool
+    {
+        if (!config('agency.allow_multiply') && $this->agencies()->count() >= 1) {
+            return false;
+        }
+
+        return $this->agencies()->count() < config('agency.max_per_user');
     }
 }
