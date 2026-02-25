@@ -199,6 +199,7 @@ class Dashboard extends Component
             'availableGigs' => $this->availableGigs,
             'myApplications' => $this->myApplications,
             'recentActivity' => $this->recentActivity,
+            'title' => 'Dashboard',
         ])->layout('layouts.app');
     }
 }

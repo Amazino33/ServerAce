@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
+    <x-slot name="title">
         <h2 class="text-2xl font-bold text-gray-800">Find Your Next Gig</h2>
     </x-slot>
 
