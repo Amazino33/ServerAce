@@ -6,10 +6,10 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center space-x-2 group">
-                        <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-blue-600 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-all duration-300 shadow-lg">
-                            <span class="text-white font-bold text-xl">S</span>
-                        </div>
-                        <span class="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent hidden sm:block">
+                        <!-- <div class="w-14 h-14 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-all duration-300 shadow-lg"> -->
+                            <x-application-logo class="text-brand-accent" />
+                        <!-- </div> -->
+                        <span class="text-xl font-bold bg-gradient-to-r from-brand-accent to-brand-dark bg-clip-text text-transparent hidden sm:block">
                             ServerAce
                         </span>
                     </a>
@@ -97,7 +97,7 @@
                         Log in
                     </a>
                     <a href="{{ route('register') }}" 
-                       class="px-6 py-2.5 bg-gradient-to-r from-green-600 to-blue-600 text-white font-bold rounded-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 shadow-md">
+                       class="px-6 py-2.5 bg-gradient-to-r from-brand-dark to-brand-accent text-white font-bold rounded-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 shadow-md">
                         Start Free <i class="fas fa-arrow-right ml-1"></i>
                     </a>
                 </div>

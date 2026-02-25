@@ -19,5 +19,8 @@
     </head>
     <body class="font-sans antialiased">
         {{ $slot }}
+
+        <!-- Global Footer -->
+        <x-footer />
     </body>
 </html>

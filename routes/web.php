@@ -85,6 +85,10 @@ Route::get('/browse', function() {
     return view('pages.browse');
 })->name('browse');
 
+// Static informational pages referenced by footer
+Route::view('/privacy-policy', 'pages.privacy')->name('privacy.policy');
+Route::view('/terms-of-service', 'pages.terms')->name('terms.of.service');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard - base access for all authenticated users
     Route::get('/dashboard', function () {

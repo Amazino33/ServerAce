@@ -4,11 +4,9 @@
             
             <!-- Logo/Header Section -->
             <div class="text-center mb-8">
-                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-lg mb-4">
-                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-                    </svg>
-                </div>
+                <a href="{{ route('home') }}" class="inline-flex items-center justify-center w-16 h-16 bg-brand-dark rounded-2xl shadow-lg mb-4">
+                    <x-application-logo class="text-brand-accent w-8 h-8" />
+                </a>
                 <h2 class="text-3xl font-bold text-gray-900">Create Account</h2>
                 <p class="mt-2 text-gray-600">Join us and start your journey today</p>
             </div>
@@ -37,7 +35,7 @@
                                    required 
                                    autofocus 
                                    autocomplete="name"
-                                   class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+                                   class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition"
                                    placeholder="John Doe">
                         </div>
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
@@ -61,7 +59,7 @@
                                    required 
                                    autofocus 
                                    autocomplete="username"
-                                   class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+                                   class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition"
                                    placeholder="John-Doe">
                         </div>
                         <x-input-error :messages="$errors->get('username')" class="mt-2" />
@@ -84,7 +82,7 @@
                                    value="{{ old('email') }}" 
                                    required 
                                    autocomplete="username"
-                                   class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+                                   class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition"
                                    placeholder="you@example.com">
                         </div>
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
@@ -106,7 +104,7 @@
                                    name="password" 
                                    required 
                                    autocomplete="new-password"
-                                   class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+                                   class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition"
                                    placeholder="At least 8 characters">
                         </div>
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
@@ -128,7 +126,7 @@
                                    name="password_confirmation" 
                                    required 
                                    autocomplete="new-password"
-                                   class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+                                   class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition"
                                    placeholder="Confirm your password">
                         </div>
                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
@@ -140,42 +138,42 @@
                             I want to:
                         </label>
                         <div class="grid grid-cols-2 gap-4">
-                            <label class="relative flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-green-500 transition">
+                            <label class="relative flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-brand-accent transition">
                                 <input type="radio" 
                                        name="role" 
                                        value="freelancer" 
                                        checked
                                        class="sr-only peer">
-                                <div class="flex flex-col items-center w-full peer-checked:text-green-600">
+                                <div class="flex flex-col items-center w-full peer-checked:text-brand-dark">
                                     <svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                     </svg>
                                     <span class="text-sm font-semibold">Work on Gigs</span>
                                     <span class="text-xs text-gray-500 mt-1">Freelancer</span>
                                 </div>
-                                <div class="absolute inset-0 border-2 border-green-500 rounded-lg hidden peer-checked:block"></div>
+                                <div class="absolute inset-0 border-2 border-brand-accent rounded-lg hidden peer-checked:block"></div>
                             </label>
 
-                            <label class="relative flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-green-500 transition">
+                            <label class="relative flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-brand-accent transition">
                                 <input type="radio" 
                                        name="role" 
                                        value="client"
                                        class="sr-only peer">
-                                <div class="flex flex-col items-center w-full peer-checked:text-green-600">
+                                <div class="flex flex-col items-center w-full peer-checked:text-brand-dark">
                                     <svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                                     </svg>
                                     <span class="text-sm font-semibold">Post Gigs</span>
                                     <span class="text-xs text-gray-500 mt-1">Client</span>
                                 </div>
-                                <div class="absolute inset-0 border-2 border-green-500 rounded-lg hidden peer-checked:block"></div>
+                                <div class="absolute inset-0 border-2 border-brand-accent rounded-lg hidden peer-checked:block"></div>
                             </label>
                         </div>
                     </div>
 
                     <!-- Register Button -->
                     <button type="submit" 
-                            class="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition duration-200 transform hover:scale-[1.02]">
+                            class="w-full bg-gradient-to-r from-brand-accent to-emerald-600 hover:from-brand-dark hover:to-emerald-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition duration-200 transform hover:scale-[1.02]">
                         <span class="flex items-center justify-center">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
