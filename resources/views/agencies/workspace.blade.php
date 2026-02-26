@@ -6,12 +6,6 @@
     <div x-data="{ inviteModalOpen: {{ $errors->has('email') ? 'true' : 'false' }} }" class="min-h-screen bg-gray-50 py-8 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            @if (session('success'))
-                <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg shadow-sm">
-                    <p class="font-bold">{{ session('success') }}</p>
-                </div>
-            @endif
-
             <div class="mb-8 flex justify-between items-start">
                 <div>
                     <div class="flex items-center gap-3 mb-2">

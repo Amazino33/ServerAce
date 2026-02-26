@@ -101,6 +101,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/agencies/{agency:slug}/workspace', [AgencyWorkspaceController::class, 'show'])->name('agencies.workspace');
     // The Invitation Route
     Route::post('/agencies/{agency:slug}/invitations', [AgencyInvitationController::class, 'store'])->name('agencies.invitations.store');
+    // The route for accepting an invitation
+    Route::get('/agencies/invitations/{token}/accept', [AgencyInvitationController::class, 'accept'])
+        ->name('agencies.invitations.accept');
 
     // Dashboard - base access for all authenticated users
     Route::get('/dashboard', function () {
