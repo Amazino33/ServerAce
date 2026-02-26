@@ -1,5 +1,5 @@
 <x-slot name="title">
-    Agency Dashboard
+    Dashboard
 </x-slot>
 <div class="min-h-screen bg-gray-50 py-8">
     <div class="max-w-7xl mx-auto px-4">
@@ -620,7 +620,7 @@
                             </div>
 
                             <div class="mt-auto pt-4 border-t border-gray-100 flex justify-end">
-                                <a href="#"
+                                <a href="{{ route('agencies.workspace', $agency->slug) }}"
                                     class="text-green-600 hover:text-green-700 font-bold flex items-center gap-2">
                                     Enter Workspace <i class="fas fa-arrow-right"></i>
                                 </a>

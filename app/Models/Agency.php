@@ -12,4 +12,9 @@ class Agency extends Model
     {
         return $this->belongsToMany(User::class)->withPivot('role')->withTimestamps();
     }
+
+    public function invitations()
+{
+    return $this->hasMany(AgencyInvitation::class);
+}
 }

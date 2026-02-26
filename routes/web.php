@@ -6,10 +6,12 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\AgencyController;
+use App\Http\Controllers\AgencyWorkspaceController;
 use App\Livewire\BrowseGigs;
 use App\Models\Gig;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Freelancer\Dashboard as FreelancerDashboard;
+use App\Http\Controllers\AgencyInvitationController;
 
 Route::get('/', function () {
     return view('pages.home');
@@ -95,6 +97,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/agencies/create', [AgencyController::class, 'create'])->name('agencies.create');
     // Process the form
     Route::post('/agencies', [AgencyController::class, 'store'])->name('agencies.store');
+    //The workspace route
+    Route::get('/agencies/{agency:slug}/workspace', [AgencyWorkspaceController::class, 'show'])->name('agencies.workspace');
+    // The Invitation Route
+    Route::post('/agencies/{agency:slug}/invitations', [AgencyInvitationController::class, 'store'])->name('agencies.invitations.store');
 
     // Dashboard - base access for all authenticated users
     Route::get('/dashboard', function () {
