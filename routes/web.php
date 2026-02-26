@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\AgencyController;
 use App\Livewire\BrowseGigs;
 use App\Models\Gig;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +20,7 @@ Route::get('/test-stripe-connection', function() {
     try {
         $stripe = new \Stripe\StripeClient(config('cashier.secret'));
         $balance = $stripe->balance->retrieve();
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Connected to Stripe successfully!',
@@ -36,10 +37,10 @@ Route::get('/test-stripe-connection', function() {
 Route::get('/test-stripe-full', function() {
     try {
         $stripe = new \Stripe\StripeClient(config('cashier.secret'));
-        
+
         // Test 1: Retrieve balance
         $balance = $stripe->balance->retrieve();
-        
+
         // Test 2: Create a test account
         $account = $stripe->accounts->create([
             'type' => 'express',
@@ -50,7 +51,7 @@ Route::get('/test-stripe-full', function() {
                 'transfers' => ['requested' => true],
             ],
         ]);
-        
+
         return response()->json([
             'success' => true,
             'message' => 'All Stripe operations working!',
@@ -66,7 +67,7 @@ Route::get('/test-stripe-full', function() {
                 'secret_key_prefix' => substr(config('cashier.secret'), 0, 10),
             ]
         ]);
-        
+
     } catch (\Exception $e) {
         return response()->json([
             'success' => false,
@@ -90,6 +91,11 @@ Route::view('/privacy-policy', 'pages.privacy')->name('privacy.policy');
 Route::view('/terms-of-service', 'pages.terms')->name('terms.of.service');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    // Show the form
+    Route::get('/agencies/create', [AgencyController::class, 'create'])->name('agencies.create');
+    // Process the form
+    Route::post('/agencies', [AgencyController::class, 'store'])->name('agencies.store');
+
     // Dashboard - base access for all authenticated users
     Route::get('/dashboard', function () {
         return view('dashboard');
@@ -117,24 +123,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/stripe/return', [StripeController::class, 'return'])
             ->name('freelancer.stripe.return');
         Route::get('/stripe/refresh', [StripeController::class, 'refresh'])
-            ->name('freelancer.stripe.refresh'); 
+            ->name('freelancer.stripe.refresh');
         Route::get('/stripe/onboarding', [StripeController::class, 'onboarding'])
             ->name('stripe.onboarding');
-        
+
         Route::get('/stripe/return', [StripeController::class, 'return'])
             ->name('stripe.return');
-        
+
         Route::get('/stripe/refresh', [StripeController::class, 'refresh'])
             ->name('stripe.refresh');
-        
+
         Route::get('/stripe/dashboard', [StripeController::class, 'accountDashboard'])
             ->name('stripe.dashboard');
-        
+
         Route::get('/stripe/status', [StripeController::class, 'status'])
             ->name('stripe.status');
-        
+
         Route::post('/stripe/disconnect', [StripeController::class, 'disconnect'])
-            ->name('stripe.disconnect');       
+            ->name('stripe.disconnect');
     });
 
     // Client-only areas
@@ -147,13 +153,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/payment/history', [PaymentController::class, 'history'])
             ->name('payment.history');
-            
+
         Route::get('/payment/{payment}', [PaymentController::class, 'show'])
             ->name('payment.show');
 
         Route::post('/payment/{payment}/release', [PaymentController::class, 'release'])
             ->name('payment.release');
-            
+
         Route::post('/payment/{payment}/refund', [PaymentController::class, 'refund'])
             ->name('payment.refund');
         // Create payment intent (client accepting application)

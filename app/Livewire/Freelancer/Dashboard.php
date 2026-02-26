@@ -39,14 +39,14 @@ class Dashboard extends Component
     public function openApplicationModal($gigId)
     {
         $this->selectedGig = Gig::findOrFail($gigId);
-        
+
         // Pre-fill proposed price with gig's budget if available
         if ($this->selectedGig->budget_fixed) {
             $this->proposedPrice = $this->selectedGig->budget_fixed;
         } elseif ($this->selectedGig->budget_min) {
             $this->proposedPrice = $this->selectedGig->budget_min;
         }
-        
+
         $this->showApplicationModal = true;
     }
 
@@ -190,6 +190,14 @@ class Dashboard extends Component
     }
 
     /**
+     * Fetch logged-in user's agencies
+     */
+    public function getUserAgenciesProperty()
+    {
+        return auth()->user()->agencies()->latest()->get();
+    }
+
+    /**
      * Render the component
      */
     public function render()
@@ -199,6 +207,7 @@ class Dashboard extends Component
             'availableGigs' => $this->availableGigs,
             'myApplications' => $this->myApplications,
             'recentActivity' => $this->recentActivity,
+            'userAgencies' => $this->userAgencies,
             'title' => 'Dashboard',
         ])->layout('layouts.app');
     }

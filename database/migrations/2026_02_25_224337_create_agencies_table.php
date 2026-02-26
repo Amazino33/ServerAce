@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('agencies', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('slug')->unique(); // Great for URLs like serversace.com/agency/cool-devs
             $table->text('description')->nullable();
             $table->timestamps();

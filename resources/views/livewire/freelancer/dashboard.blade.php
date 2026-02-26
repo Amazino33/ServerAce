@@ -23,7 +23,7 @@
             </div>
         @endif
 
-        @if(auth()->user()->needsPaymentSetup())
+        @if (auth()->user()->needsPaymentSetup())
             <!-- Payment Setup Banner -->
             <div class="mb-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl shadow-lg p-6">
                 <div class="flex items-start gap-4">
@@ -50,9 +50,9 @@
             </div>
         @endif
 
-        @if(auth()->user()->isStripeOnboarded())
+        @if (auth()->user()->isStripeOnboarded())
             <!-- Success Banner (show once after setup) -->
-            @if(session()->has('stripe_setup_complete'))
+            @if (session()->has('stripe_setup_complete'))
                 <div class="mb-6 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl shadow-lg p-6">
                     <div class="flex items-start gap-4">
                         <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
@@ -173,6 +173,10 @@
                         class="px-6 py-4 text-sm font-medium border-b-2 transition {{ $activeTab === 'applications' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
                         <i class="fas fa-inbox mr-2"></i> My Applications ({{ $stats['total_applications'] }})
                     </button>
+                    <button wire:click="setActiveTab('agencies')"
+                        class="px-6 py-4 text-sm font-medium border-b-2 transition {{ $activeTab === 'agencies' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                        <i class="fas fa-building mr-2"></i> My Agencies
+                    </button>
                 </nav>
             </div>
         </div>
@@ -180,7 +184,7 @@
         <!-- Tab Content -->
         <div>
             <!-- OVERVIEW TAB -->
-            @if($activeTab === 'overview')
+            @if ($activeTab === 'overview')
                 <div class="space-y-6">
                     <!-- Welcome Card -->
                     <div class="bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl shadow-lg p-8 text-white">
@@ -192,22 +196,23 @@
                     <div class="bg-white rounded-xl shadow-lg p-6">
                         <h3 class="text-xl font-bold text-gray-900 mb-4">Recent Activity</h3>
 
-                        @if($recentActivity->count() > 0)
+                        @if ($recentActivity->count() > 0)
                             <div class="space-y-4">
-                                @foreach($recentActivity as $application)
+                                @foreach ($recentActivity as $application)
                                     <div
                                         class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
                                         <div class="flex-1">
                                             <p class="font-semibold text-gray-900">{{ $application->gig->title }}</p>
-                                            <p class="text-sm text-gray-600">Applied {{ $application->created_at->diffForHumans() }}
+                                            <p class="text-sm text-gray-600">Applied
+                                                {{ $application->created_at->diffForHumans() }}
                                             </p>
                                         </div>
                                         <div class="flex items-center gap-4">
-                                            <span class="px-3 py-1 rounded-full text-sm font-semibold
-                                                            @if($application->status === 'pending') bg-yellow-100 text-yellow-800
+                                            <span
+                                                class="px-3 py-1 rounded-full text-sm font-semibold
+                                                            @if ($application->status === 'pending') bg-yellow-100 text-yellow-800
                                                             @elseif($application->status === 'accepted') bg-green-100 text-green-800
-                                                            @else bg-red-100 text-red-800
-                                                            @endif">
+                                                            @else bg-red-100 text-red-800 @endif">
                                                 {{ ucfirst($application->status) }}
                                             </span>
                                             <button wire:click="viewApplicationDetail({{ $application->id }})"
@@ -220,8 +225,8 @@
                             </div>
                         @else
                             <div class="text-center py-12">
-                                <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
+                                <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                                     </path>
@@ -239,13 +244,13 @@
             @endif
 
             <!-- BROWSE GIGS TAB -->
-            @if($activeTab === 'browse')
+            @if ($activeTab === 'browse')
                 <div class="bg-white rounded-xl shadow-lg p-6">
                     <h3 class="text-xl font-bold text-gray-900 mb-6">Available Gigs</h3>
 
-                    @if($availableGigs->count() > 0)
+                    @if ($availableGigs->count() > 0)
                         <div class="space-y-6">
-                            @foreach($availableGigs as $gig)
+                            @foreach ($availableGigs as $gig)
                                 <div class="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition">
                                     <div class="flex items-start justify-between">
                                         <div class="flex-1">
@@ -257,27 +262,34 @@
                                                 </span>
                                             </div>
 
-                                            <p class="text-gray-600 mb-4 line-clamp-2">{{ Str::limit($gig->description, 150) }}</p>
+                                            <p class="text-gray-600 mb-4 line-clamp-2">
+                                                {{ Str::limit($gig->description, 150) }}</p>
 
                                             <div class="flex items-center gap-6 text-sm text-gray-500">
                                                 <div class="flex items-center gap-2">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
                                                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
                                                         </path>
                                                     </svg>
                                                     <span>{{ $gig->client->name }}</span>
                                                 </div>
                                                 <div class="flex items-center gap-2">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
                                                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                     </svg>
                                                     <span>Posted {{ $gig->created_at->diffForHumans() }}</span>
                                                 </div>
                                                 <div class="flex items-center gap-2">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
                                                             d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
                                                         </path>
                                                     </svg>
@@ -287,7 +299,8 @@
                                         </div>
 
                                         <div class="ml-6 text-right">
-                                            <p class="text-2xl font-bold text-green-600 mb-3">{{ $gig->budget_display }}</p>
+                                            <p class="text-2xl font-bold text-green-600 mb-3">
+                                                {{ $gig->budget_display }}</p>
                                             <button wire:click="openApplicationModal({{ $gig->id }})"
                                                 class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition">
                                                 Apply Now
@@ -317,23 +330,27 @@
             @endif
 
             <!-- MY APPLICATIONS TAB -->
-            @if($activeTab === 'applications')
+            @if ($activeTab === 'applications')
                 <div class="bg-white rounded-xl shadow-lg p-6">
                     <h3 class="text-xl font-bold text-gray-900 mb-6">My Applications</h3>
 
-                    @if($myApplications->count() > 0)
+                    @if ($myApplications->count() > 0)
                         <div class="space-y-4">
-                            @foreach($myApplications as $application)
+                            @foreach ($myApplications as $application)
                                 <div class="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition">
                                     <div class="flex items-start justify-between">
                                         <div class="flex-1">
-                                            <h4 class="text-lg font-bold text-gray-900 mb-2">{{ $application->gig->title }}</h4>
-                                            <p class="text-sm text-gray-600 mb-3">Client: {{ $application->gig->client->name }}</p>
+                                            <h4 class="text-lg font-bold text-gray-900 mb-2">
+                                                {{ $application->gig->title }}</h4>
+                                            <p class="text-sm text-gray-600 mb-3">Client:
+                                                {{ $application->gig->client->name }}</p>
 
                                             <div class="flex items-center gap-6 text-sm text-gray-500 mb-3">
                                                 <div class="flex items-center gap-2">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
                                                             d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
                                                         </path>
                                                     </svg>
@@ -341,19 +358,21 @@
                                                         class="font-semibold">${{ number_format($application->proposed_price, 2) }}</span>
                                                 </div>
                                                 <div class="flex items-center gap-2">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
                                                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                     </svg>
                                                     <span>{{ $application->created_at->diffForHumans() }}</span>
                                                 </div>
                                             </div>
 
-                                            <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold
-                                                            @if($application->status === 'pending') bg-yellow-100 text-yellow-800
+                                            <span
+                                                class="inline-block px-3 py-1 rounded-full text-sm font-semibold
+                                                            @if ($application->status === 'pending') bg-yellow-100 text-yellow-800
                                                             @elseif($application->status === 'accepted') bg-green-100 text-green-800
-                                                            @else bg-red-100 text-red-800
-                                                            @endif">
+                                                            @else bg-red-100 text-red-800 @endif">
                                                 {{ ucfirst($application->status) }}
                                             </span>
                                         </div>
@@ -392,7 +411,7 @@
         </div>
 
         <!-- APPLICATION MODAL -->
-        @if($showApplicationModal && $selectedGig)
+        @if ($showApplicationModal && $selectedGig)
             <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-screen overflow-y-auto">
 
@@ -475,7 +494,7 @@
         @endif
 
         <!-- APPLICATION DETAIL MODAL -->
-        @if($showApplicationDetailModal && $selectedApplication)
+        @if ($showApplicationDetailModal && $selectedApplication)
             <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full mx-4 max-h-screen overflow-y-auto">
 
@@ -500,7 +519,8 @@
                                 class="text-lg font-bold text-green-600 hover:text-green-700">
                                 {{ $selectedApplication->gig->title }} ↗
                             </a>
-                            <p class="text-sm text-gray-600 mt-2">Client: {{ $selectedApplication->gig->client->name }}</p>
+                            <p class="text-sm text-gray-600 mt-2">Client:
+                                {{ $selectedApplication->gig->client->name }}</p>
                         </div>
 
                         <!-- Proposed Price -->
@@ -528,26 +548,29 @@
                         <!-- Status -->
                         <div class="mb-6">
                             <h4 class="font-semibold text-gray-700 mb-2">Status</h4>
-                            <span class="inline-block px-4 py-2 rounded-full text-sm font-semibold
-                                    @if($selectedApplication->status === 'pending') bg-yellow-100 text-yellow-800
+                            <span
+                                class="inline-block px-4 py-2 rounded-full text-sm font-semibold
+                                    @if ($selectedApplication->status === 'pending') bg-yellow-100 text-yellow-800
                                     @elseif($selectedApplication->status === 'accepted') bg-green-100 text-green-800
-                                    @else bg-red-100 text-red-800
-                                    @endif">
+                                    @else bg-red-100 text-red-800 @endif">
                                 {{ ucfirst($selectedApplication->status) }}
                             </span>
 
-                            @if($selectedApplication->status === 'pending')
-                                <p class="text-sm text-gray-500 mt-2">Your application is being reviewed by the client.</p>
+                            @if ($selectedApplication->status === 'pending')
+                                <p class="text-sm text-gray-500 mt-2">Your application is being reviewed by the client.
+                                </p>
                             @elseif($selectedApplication->status === 'accepted')
-                                <p class="text-sm text-green-600 mt-2">🎉 Congratulations! Your application was accepted.</p>
+                                <p class="text-sm text-green-600 mt-2">🎉 Congratulations! Your application was
+                                    accepted.</p>
                             @else
-                                <p class="text-sm text-gray-500 mt-2">Unfortunately, your application was not selected.</p>
+                                <p class="text-sm text-gray-500 mt-2">Unfortunately, your application was not selected.
+                                </p>
                             @endif
                         </div>
 
                         <!-- Action Buttons -->
                         <div class="flex gap-4">
-                            @if($selectedApplication->status === 'pending')
+                            @if ($selectedApplication->status === 'pending')
                                 <button wire:click="withdrawApplication({{ $selectedApplication->id }})"
                                     wire:confirm="Are you sure you want to withdraw this application?"
                                     class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl transition">
@@ -561,6 +584,67 @@
                             </button>
                         </div>
                     </div>
+                </div>
+            </div>
+        @endif
+
+        @if ($activeTab === 'agencies')
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold text-gray-900">My Agencies</h3>
+
+                    @if (auth()->user()->canJoinNewAgency())
+                        <a href="{{ route('agencies.create') }}"
+                            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                            <i class="fas fa-plus"></i> New Agency
+                        </a>
+                    @endif
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @forelse ($userAgencies as $agency)
+                        <div
+                            class="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition flex flex-col h-full">
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="text-xl font-bold text-gray-900">{{ $agency->name }}</h4>
+                                    <span
+                                        class="px-3 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full uppercase">
+                                        {{ $agency->pivot->role }}
+                                    </span>
+                                </div>
+
+                                <p class="text-gray-600 text-sm mb-6 line-clamp-3">
+                                    {{ $agency->description ?? 'No description provided.' }}
+                                </p>
+                            </div>
+
+                            <div class="mt-auto pt-4 border-t border-gray-100 flex justify-end">
+                                <a href="#"
+                                    class="text-green-600 hover:text-green-700 font-bold flex items-center gap-2">
+                                    Enter Workspace <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                    @empty
+                        <div class="col-span-full text-center py-12">
+                            <div
+                                class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-building text-2xl text-gray-400"></i>
+                            </div>
+                            <p class="text-gray-900 font-bold text-lg mb-1">No agencies yet</p>
+                            <p class="text-gray-500 mb-6">Create an agency to collaborate with a team and place larger
+                                bids.</p>
+
+                            @if (auth()->user()->canJoinNewAgency())
+                                <a href="{{ route('agencies.create') }}"
+                                    class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition">
+                                    <i class="fas fa-plus"></i> Create Your First Agency
+                                </a>
+                            @endif
+                        </div>
+                    @endforelse
                 </div>
             </div>
         @endif
