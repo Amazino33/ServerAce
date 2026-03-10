@@ -123,7 +123,7 @@
                         <i class="fas fa-inbox mr-2"></i> Applications ({{ $stats['pending_applications'] }})
                     </button>
                     <button wire:click="setActiveTab('in_progress')"
-                            class="px-6 py-4 text-sm font-medium border-b-2 transition {{ $activeTab === 'in_progress' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                        class="px-6 py-4 text-sm font-medium border-b-2 transition {{ $activeTab === 'in_progress' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
                         <i class="fas fa-spinner mr-2"></i> In Progress ({{ $stats['in_progress_gigs'] ?? 0 }})
                     </button>
                 </nav>
@@ -133,12 +133,13 @@
         <!-- Tab Content -->
         <div>
             <!-- OVERVIEW TAB -->
-            @if($activeTab === 'overview')
+            @if ($activeTab === 'overview')
                 <div class="space-y-6">
                     <!-- Welcome Card -->
                     <div class="bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl shadow-lg p-8 text-white">
                         <h2 class="text-2xl font-bold mb-2">Welcome back, {{ auth()->user()->name }}! 👋</h2>
-                        <p class="text-green-100 mb-4">Manage your gigs and find the perfect freelancer for your projects
+                        <p class="text-green-100 mb-4">Manage your gigs and find the perfect freelancer for your
+                            projects
                         </p>
                         <button wire:click="$dispatch('openModal')"
                             class="inline-block bg-white text-green-600 font-bold py-3 px-6 rounded-lg hover:bg-green-50 transition">
@@ -157,17 +158,17 @@
                                 </button>
                             </div>
 
-                            @if($recentGigs && $recentGigs->count() > 0)
+                            @if ($recentGigs && $recentGigs->count() > 0)
                                 <div class="space-y-4">
-                                    @foreach($recentGigs as $gig)
+                                    @foreach ($recentGigs as $gig)
                                         <div class="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
                                             <div class="flex items-start justify-between">
                                                 <div class="flex-1">
                                                     <p class="font-semibold text-gray-900">{{ $gig->title }}</p>
                                                     <div class="flex items-center gap-3 mt-2 text-sm text-gray-600">
                                                         <span class="flex items-center gap-1">
-                                                            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
+                                                            <svg class="w-4 h-4 text-green-600" fill="none"
+                                                                stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                                     stroke-width="2"
                                                                     d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
@@ -187,11 +188,11 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <span class="px-3 py-1 rounded-full text-xs font-semibold
-                                                                @if($gig->status->value === 'open') bg-green-100 text-green-800
+                                                <span
+                                                    class="px-3 py-1 rounded-full text-xs font-semibold
+                                                                @if ($gig->status->value === 'open') bg-green-100 text-green-800
                                                                 @elseif($gig->status->value === 'closed') bg-gray-100 text-gray-800
-                                                                @else bg-blue-100 text-blue-800
-                                                                @endif">
+                                                                @else bg-blue-100 text-blue-800 @endif">
                                                     {{ ucfirst(str_replace('_', ' ', $gig->status->value)) }}
                                                 </span>
                                             </div>
@@ -200,8 +201,8 @@
                                 </div>
                             @else
                                 <div class="text-center py-8">
-                                    <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                    <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
                                         </path>
@@ -225,9 +226,9 @@
                                 </button>
                             </div>
 
-                            @if($recentApplications && $recentApplications->count() > 0)
+                            @if ($recentApplications && $recentApplications->count() > 0)
                                 <div class="space-y-4">
-                                    @foreach($recentApplications as $application)
+                                    @foreach ($recentApplications as $application)
                                         <div class="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
                                             <div class="flex items-center justify-between">
                                                 <div class="flex items-center gap-3 flex-1">
@@ -238,18 +239,19 @@
                                                     <div class="flex-1 min-w-0">
                                                         <p class="font-semibold text-gray-900 truncate">
                                                             {{ $application->freelancer->name }}</p>
-                                                        <p class="text-sm text-gray-600 truncate">{{ $application->gig->title }}</p>
+                                                        <p class="text-sm text-gray-600 truncate">
+                                                            {{ $application->gig->title }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="flex items-center gap-3">
-                                                    <span class="px-3 py-1 rounded-full text-xs font-semibold
-                                                                    @if($application->status === 'pending') bg-yellow-100 text-yellow-800
+                                                    <span
+                                                        class="px-3 py-1 rounded-full text-xs font-semibold
+                                                                    @if ($application->status === 'pending') bg-yellow-100 text-yellow-800
                                                                     @elseif($application->status === 'accepted') bg-green-100 text-green-800
-                                                                    @else bg-red-100 text-red-800
-                                                                    @endif">
+                                                                    @else bg-red-100 text-red-800 @endif">
                                                         {{ ucfirst($application->status) }}
                                                     </span>
-                                                    @if($application->status === 'pending')
+                                                    @if ($application->status === 'pending')
                                                         <button wire:click="viewApplication({{ $application->id }})"
                                                             class="text-green-600 hover:text-green-700 font-semibold text-sm">
                                                             Review →
@@ -262,8 +264,8 @@
                                 </div>
                             @else
                                 <div class="text-center py-8">
-                                    <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                    <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                                         </path>
@@ -350,7 +352,8 @@
                                 <p class="text-sm text-gray-600 mt-1">Awaiting Review</p>
                             </div>
                             <div class="text-center p-4 bg-indigo-50 rounded-lg">
-                                <p class="text-2xl font-bold text-indigo-600">{{ $stats['accepted_applications'] }}</p>
+                                <p class="text-2xl font-bold text-indigo-600">{{ $stats['accepted_applications'] }}
+                                </p>
                                 <p class="text-sm text-gray-600 mt-1">Freelancers Hired</p>
                             </div>
                         </div>
@@ -359,7 +362,7 @@
             @endif
 
             <!-- GIGS TAB -->
-            @if($activeTab === 'gigs')
+            @if ($activeTab === 'gigs')
                 <div class="bg-white rounded-xl shadow-lg p-6">
                     <!-- Filters -->
                     <div class="flex flex-col md:flex-row gap-4 mb-6">
@@ -386,56 +389,65 @@
 
                     <h3 class="text-xl font-bold text-gray-900 mb-6">My Gigs</h3>
 
-                    @if($gigs->count() > 0)
+                    @if ($gigs->count() > 0)
                         <div class="space-y-4">
-                            @foreach($gigs as $gig)
+                            @foreach ($gigs as $gig)
                                 <div class="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition">
                                     <div class="flex items-start justify-between">
                                         <div class="flex-1">
                                             <div class="flex items-center gap-3 mb-2">
                                                 <h4 class="text-xl font-bold text-gray-900">{{ $gig->title }}</h4>
-                                                <span class="px-3 py-1 rounded-full text-xs font-semibold
-                                                                @if($gig->status->value === 'open') bg-green-100 text-green-800
+                                                <span
+                                                    class="px-3 py-1 rounded-full text-xs font-semibold
+                                                                @if ($gig->status->value === 'open') bg-green-100 text-green-800
                                                                 @elseif($gig->status->value === 'closed') bg-gray-100 text-gray-800
-                                                                @else bg-blue-100 text-blue-800
-                                                                @endif">
+                                                                @else bg-blue-100 text-blue-800 @endif">
                                                     {{ ucfirst(str_replace('_', ' ', $gig->status->value)) }}
                                                 </span>
                                             </div>
 
-                                            <p class="text-gray-600 mb-4 line-clamp-2">{{ Str::limit($gig->description, 150) }}</p>
+                                            <p class="text-gray-600 mb-4 line-clamp-2">
+                                                {{ Str::limit($gig->description, 150) }}</p>
 
                                             <div class="flex items-center gap-6 text-sm text-gray-500">
                                                 <div class="flex items-center gap-2">
-                                                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    <svg class="w-4 h-4 text-green-600" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
                                                             d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
                                                         </path>
                                                     </svg>
-                                                    <span class="font-semibold">${{ number_format($gig->budget, 2) }}</span>
+                                                    <span
+                                                        class="font-semibold">${{ number_format($gig->budget, 2) }}</span>
                                                 </div>
                                                 <div class="flex items-center gap-2">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
                                                             d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
                                                         </path>
                                                     </svg>
                                                     <span>{{ $gig->applications_count }}
                                                         {{ Str::plural('application', $gig->applications_count) }}</span>
                                                 </div>
-                                                @if($gig->pending_applications_count > 0)
+                                                @if ($gig->pending_applications_count > 0)
                                                     <div class="flex items-center gap-2 text-yellow-600 font-semibold">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
                                                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                         </svg>
                                                         <span>{{ $gig->pending_applications_count }} pending</span>
                                                     </div>
                                                 @endif
                                                 <div class="flex items-center gap-2">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
                                                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                                         </path>
                                                     </svg>
@@ -485,7 +497,7 @@
                             <p class="text-gray-500 text-lg">No gigs found</p>
                             <p class="text-gray-400 mt-1">Get started by posting your first gig</p>
                             <button wire:click="$dispatch('openModal')"
-                                    class="inline-block bg-white text-green-600 font-bold py-3 px-6 rounded-lg hover:bg-green-50 transition">
+                                class="inline-block bg-white text-green-600 font-bold py-3 px-6 rounded-lg hover:bg-green-50 transition">
                                 <i class="fas fa-plus-circle mr-2"></i>Post a New Gig
                             </button>
                         </div>
@@ -494,7 +506,7 @@
             @endif
 
             <!-- APPLICATIONS TAB -->
-            @if($activeTab === 'applications')
+            @if ($activeTab === 'applications')
                 <div class="bg-white rounded-xl shadow-lg p-6">
                     <!-- Filter -->
                     <div class="mb-6">
@@ -508,7 +520,7 @@
                             <select wire:model.live="filterGigForApplications"
                                 class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 appearance-none bg-white cursor-pointer">
                                 <option value="all">All Gigs</option>
-                                @foreach($gigsForFilter as $gig)
+                                @foreach ($gigsForFilter as $gig)
                                     <option value="{{ $gig->id }}">{{ $gig->title }}</option>
                                 @endforeach
                             </select>
@@ -517,65 +529,315 @@
 
                     <h3 class="text-xl font-bold text-gray-900 mb-6">Applications</h3>
 
-                    @if($applications->count() > 0)
+                    @if ($applications->count() > 0)
                         <div class="space-y-4">
-                            @foreach($applications as $application)
+                            @foreach ($applications as $application)
                                 <div class="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition">
                                     <div class="flex items-start justify-between">
                                         <div class="flex items-start gap-4 flex-1">
-                                            <!-- Freelancer Avatar -->
-                                            <div
-                                                class="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
-                                                {{ substr($application->freelancer->name, 0, 1) }}
-                                            </div>
 
-                                            <div class="flex-1 min-w-0">
-                                                <h4 class="text-lg font-bold text-gray-900 mb-1">
-                                                    {{ $application->freelancer->name }}</h4>
-                                                <p class="text-sm text-gray-600 mb-2">
-                                                    Applied to: <span class="font-semibold">{{ $application->gig->title }}</span>
-                                                </p>
-                                                <p class="text-sm text-gray-700 mb-3 line-clamp-2 bg-gray-50 p-3 rounded-lg">
-                                                    {{ Str::limit($application->cover_letter, 200) }}
-                                                </p>
-                                                <div class="flex items-center gap-4">
-                                                    <span class="flex items-center text-sm font-semibold text-green-600">
-                                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
-                                                            viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                                            </path>
-                                                        </svg>
-                                                        ${{ number_format($application->proposed_price, 2) }}
-                                                    </span>
-                                                    <span class="flex items-center text-xs text-gray-500">
-                                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
-                                                            viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                        </svg>
-                                                        {{ $application->created_at->diffForHumans() }}
-                                                    </span>
+                                            @if ($application->agency_id)
+                                                <div
+                                                    class="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0 shadow-sm border border-purple-200 overflow-hidden">
+                                                    @if ($application->agency->logo_path)
+                                                        <img src="{{ asset('storage/' . $application->agency->logo_path) }}"
+                                                            alt="{{ $application->agency->name }}"
+                                                            class="object-cover w-full h-full">
+                                                    @else
+                                                        <i class="fas fa-building"></i>
+                                                    @endif
+                                                </div>
+
+                                                <div class="flex-1 min-w-0">
+                                                    <div class="flex items-center gap-2 mb-1">
+                                                        <h4 class="text-lg font-bold text-gray-900">
+                                                            {{ $application->agency->name }}</h4>
+                                                        <span
+                                                            class="px-2 py-0.5 bg-purple-100 text-purple-800 text-[10px] font-bold uppercase rounded-full tracking-wider">
+                                                            Agency
+                                                        </span>
+                                                    </div>
+                                                    <p class="text-sm text-gray-500 mb-2">
+                                                        Rep: <span
+                                                            class="font-medium text-gray-700">{{ $application->freelancer->name }}</span>
+                                                        | Applied to: <span
+                                                            class="font-semibold">{{ $application->gig->title }}</span>
+                                                    </p>
+                                                @else
+                                                    <div
+                                                        class="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+                                                        {{ substr($application->freelancer->name, 0, 1) }}
+                                                    </div>
+
+                                                    <div class="flex-1 min-w-0">
+                                                        <div class="flex items-center gap-2 mb-1">
+                                                            <h4 class="text-lg font-bold text-gray-900">
+                                                                {{ $application->freelancer->name }}</h4>
+                                                            <span
+                                                                class="px-2 py-0.5 bg-green-100 text-green-800 text-[10px] font-bold uppercase rounded-full tracking-wider">
+                                                                Independent
+                                                            </span>
+                                                        </div>
+                                                        <p class="text-sm text-gray-600 mb-2">
+                                                            Applied to: <span
+                                                                class="font-semibold">{{ $application->gig->title }}</span>
+                                                        </p>
+                                            @endif
+                                            <p
+                                                class="text-sm text-gray-700 mb-3 line-clamp-2 bg-gray-50 p-3 rounded-lg">
+                                                {{ Str::limit($application->cover_letter, 200) }}
+                                            </p>
+
+                                            <div class="flex items-center gap-4">
+                                                <span class="flex items-center text-sm font-semibold text-green-600">
+                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                                        </path>
+                                                    </svg>
+                                                    ${{ number_format($application->proposed_price, 2) }}
+                                                </span>
+                                                <span class="flex items-center text-xs text-gray-500">
+                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                    {{ $application->created_at->diffForHumans() }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="ml-6 flex flex-col items-end gap-3">
+                                        <span
+                                            class="px-3 py-1 rounded-full text-sm font-semibold
+                    @if ($application->status === 'pending') bg-yellow-100 text-yellow-800
+                    @elseif($application->status === 'accepted') bg-green-100 text-green-800
+                    @else bg-red-100 text-red-800 @endif">
+                                            {{ ucfirst($application->status) }}
+                                        </span>
+
+                                        @if ($application->status === 'pending')
+                                            <button wire:click="viewApplication({{ $application->id }})"
+                                                class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition">
+                                                Review
+                                            </button>
+                                        @endif
+                                    </div>
+                                </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-6">
+                    {{ $applications->links() }}
+                </div>
+            @else
+                <div class="text-center py-12">
+                    <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
+                    </svg>
+                    <p class="text-gray-500 text-lg">No applications yet</p>
+                    <p class="text-gray-400 mt-1">Applications will appear here when freelancers apply</p>
+                </div>
+            @endif
+        </div>
+        @endif
+
+        <!-- IN PROGRESS TAB -->
+        @if ($activeTab === 'in_progress')
+            <div class="space-y-6">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Gigs In Progress</h3>
+
+                    @if ($inProgressGigs->count() > 0)
+                        <div class="space-y-6">
+                            @foreach ($inProgressGigs as $gig)
+                                <div class="border-2 border-blue-200 rounded-xl p-6 bg-blue-50">
+                                    <!-- Gig Header -->
+                                    <div class="flex items-start justify-between mb-4">
+                                        <div class="flex-1">
+                                            <h4 class="text-2xl font-bold text-gray-900 mb-2">{{ $gig->title }}</h4>
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-800">
+                                                <i class="fas fa-spinner fa-spin mr-2"></i>
+                                                In Progress
+                                            </span>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-sm text-gray-600 mb-1">Budget</p>
+                                            <p class="text-2xl font-bold text-green-600">{{ $gig->budget_display }}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Developer/Freelancer Information -->
+                                    <div class="bg-white rounded-xl p-6 mb-4 border border-gray-200">
+                                        <h5 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                                            <i class="fas fa-user-circle text-green-600 mr-2"></i>
+                                            Working On This Project
+                                        </h5>
+
+                                        @if ($gig->inhouse_developer_id && $gig->inHouseDeveloper)
+                                            <!-- In-House Developer -->
+                                            <div class="flex items-center gap-4">
+                                                <div
+                                                    class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
+                                                    {{ substr($gig->inHouseDeveloper->name, 0, 1) }}
+                                                </div>
+                                                <div class="flex-1">
+                                                    <div class="flex items-center gap-2 mb-1">
+                                                        <p class="text-xl font-bold text-gray-900">
+                                                            {{ $gig->inHouseDeveloper->name }}</p>
+                                                        <span
+                                                            class="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded-full">
+                                                            <i class="fas fa-home mr-1"></i>In-House Developer
+                                                        </span>
+                                                    </div>
+                                                    <p class="text-gray-600">{{ $gig->inHouseDeveloper->email }}</p>
+                                                    @if ($gig->inhouse_assigned_at)
+                                                        <p class="text-sm text-gray-500 mt-2">
+                                                            <i class="fas fa-calendar-check mr-1"></i>
+                                                            Assigned {{ $gig->inhouse_assigned_at->diffForHumans() }}
+                                                            ({{ $gig->inhouse_assigned_at->format('M d, Y') }})
+                                                        </p>
+                                                    @endif
+                                                </div>
+                                                <div class="flex flex-col gap-2">
+                                                    <a href="mailto:{{ $gig->inHouseDeveloper->email }}"
+                                                        class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition text-center">
+                                                        <i class="fas fa-envelope mr-2"></i>Contact
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        @elseif($gig->acceptedFreelancer)
+                                            <!-- Freelancer -->
+                                            @php
+                                                $freelancer = $gig->acceptedFreelancer;
+                                                $acceptedApp = $gig->applications->where('status', 'accepted')->first();
+                                            @endphp
+                                            <div class="flex items-center gap-4">
+                                                <div
+                                                    class="w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
+                                                    {{ substr($freelancer->name, 0, 1) }}
+                                                </div>
+                                                <div class="flex-1">
+                                                    <div class="flex items-center gap-2 mb-1">
+                                                        <p class="text-xl font-bold text-gray-900">
+                                                            {{ $freelancer->name }}</p>
+                                                        <span
+                                                            class="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">
+                                                            <i class="fas fa-user-check mr-1"></i>Freelancer
+                                                        </span>
+                                                    </div>
+                                                    <p class="text-gray-600">{{ $freelancer->email }}</p>
+                                                    @if ($acceptedApp)
+                                                        <p class="text-sm text-green-600 font-semibold mt-2">
+                                                            <i class="fas fa-dollar-sign mr-1"></i>
+                                                            Agreed Rate:
+                                                            ${{ number_format($acceptedApp->proposed_price, 2) }}
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 mt-1">
+                                                            <i class="fas fa-calendar-check mr-1"></i>
+                                                            Started {{ $acceptedApp->updated_at->diffForHumans() }}
+                                                            ({{ $acceptedApp->updated_at->format('M d, Y') }})
+                                                        </p>
+                                                    @endif
+                                                </div>
+                                                <div class="flex flex-col gap-2">
+                                                    <a href="mailto:{{ $freelancer->email }}"
+                                                        class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition text-center">
+                                                        <i class="fas fa-envelope mr-2"></i>Contact
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="text-center py-4 text-gray-500">
+                                                <i class="fas fa-exclamation-circle text-3xl mb-2"></i>
+                                                <p>No developer assigned yet</p>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <!-- Project Timeline -->
+                                    <div class="bg-white rounded-xl p-6 mb-4 border border-gray-200">
+                                        <h5 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                                            <i class="fas fa-clock text-blue-600 mr-2"></i>
+                                            Project Timeline
+                                        </h5>
+                                        <div class="space-y-3">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                                                    <i class="fas fa-check text-green-600"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="font-semibold text-gray-900">Posted</p>
+                                                    <p class="text-sm text-gray-500">
+                                                        {{ $gig->created_at->format('M d, Y \a\t h:i A') }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                                    <i class="fas fa-spinner fa-spin text-blue-600"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="font-semibold text-gray-900">In Progress</p>
+                                                    <p class="text-sm text-gray-500">
+                                                        Started {{ $gig->updated_at->diffForHumans() }}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="ml-6 flex flex-col items-end gap-3">
-                                            <span class="px-3 py-1 rounded-full text-sm font-semibold
-                                                            @if($application->status === 'pending') bg-yellow-100 text-yellow-800
-                                                            @elseif($application->status === 'accepted') bg-green-100 text-green-800
-                                                            @else bg-red-100 text-red-800
-                                                            @endif">
-                                                {{ ucfirst($application->status) }}
-                                            </span>
+                                    <!-- Project Description -->
+                                    <div class="bg-white rounded-xl p-6 mb-4 border border-gray-200">
+                                        <h5 class="text-lg font-bold text-gray-900 mb-3 flex items-center">
+                                            <i class="fas fa-file-alt text-gray-600 mr-2"></i>
+                                            Project Description
+                                        </h5>
+                                        <p class="text-gray-700 whitespace-pre-line">{{ $gig->description }}</p>
+                                    </div>
 
-                                            @if($application->status === 'pending')
-                                                <button wire:click="viewApplication({{ $application->id }})"
-                                                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition">
-                                                    Review
+                                    <!-- Action Buttons -->
+                                    <div class="flex gap-3 justify-end">
+                                        @php
+                                            // Find the payment for this gig (there should be only one)
+                                            $payment = $gig->payment()->first();
+                                        @endphp
+
+                                        @if ($payment && $payment->status === 'held')
+                                            <form action="{{ route('client.payment.release', $payment) }}"
+                                                method="POST"
+                                                onsubmit="return confirm('Release ${{ number_format($payment->freelancer_amount, 2) }} to the freelancer?\n\nThis cannot be undone.');"
+                                                class="inline">
+                                                @csrf
+                                                <button type="submit"
+                                                    class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg transition shadow-lg">
+                                                    <i class="fas fa-check-circle mr-2"></i>
+                                                    Mark as Complete & Release Payment
                                                 </button>
-                                            @endif
-                                        </div>
+                                            </form>
+                                        @else
+                                            <button disabled
+                                                class="px-8 py-3 bg-gray-400 text-white font-bold rounded-lg cursor-not-allowed">
+                                                No Payment to Release
+                                            </button>
+                                        @endif
+                                        <button wire:click="openDisputeModal({{ $gig->id }})"
+                                            class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition">
+                                            <i class="fas fa-exclamation-triangle mr-2"></i>Report Issue
+                                        </button>
                                     </div>
                                 </div>
                             @endforeach
@@ -583,356 +845,160 @@
 
                         <!-- Pagination -->
                         <div class="mt-6">
-                            {{ $applications->links() }}
+                            {{ $inProgressGigs->links() }}
                         </div>
                     @else
                         <div class="text-center py-12">
-                            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                </path>
-                            </svg>
-                            <p class="text-gray-500 text-lg">No applications yet</p>
-                            <p class="text-gray-400 mt-1">Applications will appear here when freelancers apply</p>
+                            <div
+                                class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-tasks text-4xl text-gray-400"></i>
+                            </div>
+                            <p class="text-gray-500 text-lg mb-2">No gigs in progress</p>
+                            <p class="text-gray-400 text-sm">When work begins on your gigs, they'll appear here</p>
                         </div>
                     @endif
-                </div>
-            @endif
-
-            <!-- IN PROGRESS TAB -->
-            @if($activeTab === 'in_progress')
-                <div class="space-y-6">
-                    <div class="bg-white rounded-xl shadow-lg p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-6">Gigs In Progress</h3>
-                        
-                        @if($inProgressGigs->count() > 0)
-                            <div class="space-y-6">
-                                @foreach($inProgressGigs as $gig)
-                                    <div class="border-2 border-blue-200 rounded-xl p-6 bg-blue-50">
-                                        <!-- Gig Header -->
-                                        <div class="flex items-start justify-between mb-4">
-                                            <div class="flex-1">
-                                                <h4 class="text-2xl font-bold text-gray-900 mb-2">{{ $gig->title }}</h4>
-                                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-800">
-                                                    <i class="fas fa-spinner fa-spin mr-2"></i>
-                                                    In Progress
-                                                </span>
-                                            </div>
-                                            <div class="text-right">
-                                                <p class="text-sm text-gray-600 mb-1">Budget</p>
-                                                <p class="text-2xl font-bold text-green-600">{{ $gig->budget_display }}</p>
-                                            </div>
-                                        </div>
-
-                                        <!-- Developer/Freelancer Information -->
-                                        <div class="bg-white rounded-xl p-6 mb-4 border border-gray-200">
-                                            <h5 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                                                <i class="fas fa-user-circle text-green-600 mr-2"></i>
-                                                Working On This Project
-                                            </h5>
-
-                                            @if($gig->inhouse_developer_id && $gig->inHouseDeveloper)
-                                                <!-- In-House Developer -->
-                                                <div class="flex items-center gap-4">
-                                                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
-                                                        {{ substr($gig->inHouseDeveloper->name, 0, 1) }}
-                                                    </div>
-                                                    <div class="flex-1">
-                                                        <div class="flex items-center gap-2 mb-1">
-                                                            <p class="text-xl font-bold text-gray-900">{{ $gig->inHouseDeveloper->name }}</p>
-                                                            <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded-full">
-                                                                <i class="fas fa-home mr-1"></i>In-House Developer
-                                                            </span>
-                                                        </div>
-                                                        <p class="text-gray-600">{{ $gig->inHouseDeveloper->email }}</p>
-                                                        @if($gig->inhouse_assigned_at)
-                                                            <p class="text-sm text-gray-500 mt-2">
-                                                                <i class="fas fa-calendar-check mr-1"></i>
-                                                                Assigned {{ $gig->inhouse_assigned_at->diffForHumans() }}
-                                                                ({{ $gig->inhouse_assigned_at->format('M d, Y') }})
-                                                            </p>
-                                                        @endif
-                                                    </div>
-                                                    <div class="flex flex-col gap-2">
-                                                        <a href="mailto:{{ $gig->inHouseDeveloper->email }}" 
-                                                        class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition text-center">
-                                                            <i class="fas fa-envelope mr-2"></i>Contact
-                                                        </a>
-                                                    </div>
-                                                </div>
-
-                                            @elseif($gig->acceptedFreelancer)
-                                                <!-- Freelancer -->
-                                                @php 
-                                                    $freelancer = $gig->acceptedFreelancer;
-                                                    $acceptedApp = $gig->applications->where('status', 'accepted')->first();
-                                                @endphp
-                                                <div class="flex items-center gap-4">
-                                                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
-                                                        {{ substr($freelancer->name, 0, 1) }}
-                                                    </div>
-                                                    <div class="flex-1">
-                                                        <div class="flex items-center gap-2 mb-1">
-                                                            <p class="text-xl font-bold text-gray-900">{{ $freelancer->name }}</p>
-                                                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">
-                                                                <i class="fas fa-user-check mr-1"></i>Freelancer
-                                                            </span>
-                                                        </div>
-                                                        <p class="text-gray-600">{{ $freelancer->email }}</p>
-                                                        @if($acceptedApp)
-                                                            <p class="text-sm text-green-600 font-semibold mt-2">
-                                                                <i class="fas fa-dollar-sign mr-1"></i>
-                                                                Agreed Rate: ${{ number_format($acceptedApp->proposed_price, 2) }}
-                                                            </p>
-                                                            <p class="text-sm text-gray-500 mt-1">
-                                                                <i class="fas fa-calendar-check mr-1"></i>
-                                                                Started {{ $acceptedApp->updated_at->diffForHumans() }}
-                                                                ({{ $acceptedApp->updated_at->format('M d, Y') }})
-                                                            </p>
-                                                        @endif
-                                                    </div>
-                                                    <div class="flex flex-col gap-2">
-                                                        <a href="mailto:{{ $freelancer->email }}" 
-                                                        class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition text-center">
-                                                            <i class="fas fa-envelope mr-2"></i>Contact
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            @else
-                                                <div class="text-center py-4 text-gray-500">
-                                                    <i class="fas fa-exclamation-circle text-3xl mb-2"></i>
-                                                    <p>No developer assigned yet</p>
-                                                </div>
-                                            @endif
-                                        </div>
-
-                                        <!-- Project Timeline -->
-                                        <div class="bg-white rounded-xl p-6 mb-4 border border-gray-200">
-                                            <h5 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                                                <i class="fas fa-clock text-blue-600 mr-2"></i>
-                                                Project Timeline
-                                            </h5>
-                                            <div class="space-y-3">
-                                                <div class="flex items-center gap-3">
-                                                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
-                                                        <i class="fas fa-check text-green-600"></i>
-                                                    </div>
-                                                    <div>
-                                                        <p class="font-semibold text-gray-900">Posted</p>
-                                                        <p class="text-sm text-gray-500">{{ $gig->created_at->format('M d, Y \a\t h:i A') }}</p>
-                                                    </div>
-                                                </div>
-                                                <div class="flex items-center gap-3">
-                                                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                                                        <i class="fas fa-spinner fa-spin text-blue-600"></i>
-                                                    </div>
-                                                    <div>
-                                                        <p class="font-semibold text-gray-900">In Progress</p>
-                                                        <p class="text-sm text-gray-500">
-                                                            Started {{ $gig->updated_at->diffForHumans() }}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Project Description -->
-                                        <div class="bg-white rounded-xl p-6 mb-4 border border-gray-200">
-                                            <h5 class="text-lg font-bold text-gray-900 mb-3 flex items-center">
-                                                <i class="fas fa-file-alt text-gray-600 mr-2"></i>
-                                                Project Description
-                                            </h5>
-                                            <p class="text-gray-700 whitespace-pre-line">{{ $gig->description }}</p>
-                                        </div>
-
-                                        <!-- Action Buttons -->
-                                        <div class="flex gap-3 justify-end">
-                                            @php
-                                                // Find the payment for this gig (there should be only one)
-                                                $payment = $gig->payment()->first();
-                                            @endphp
-
-                                            @if($payment && $payment->status === 'held')
-                                                <form 
-                                                    action="{{ route('client.payment.release', $payment) }}" 
-                                                    method="POST"
-                                                    onsubmit="return confirm('Release ${{ number_format($payment->freelancer_amount, 2) }} to the freelancer?\n\nThis cannot be undone.');"
-                                                    class="inline">
-                                                    @csrf
-                                                    <button type="submit" 
-                                                            class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg transition shadow-lg">
-                                                        <i class="fas fa-check-circle mr-2"></i>
-                                                        Mark as Complete & Release Payment
-                                                    </button>
-                                                </form>
-                                            @else
-                                                <button disabled class="px-8 py-3 bg-gray-400 text-white font-bold rounded-lg cursor-not-allowed">
-                                                    No Payment to Release
-                                                </button>
-                                            @endif
-                                            <button wire:click="openDisputeModal({{ $gig->id }})" 
-                                                    class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition">
-                                                <i class="fas fa-exclamation-triangle mr-2"></i>Report Issue
-                                            </button>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-
-                            <!-- Pagination -->
-                            <div class="mt-6">
-                                {{ $inProgressGigs->links() }}
-                            </div>
-                        @else
-                            <div class="text-center py-12">
-                                <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <i class="fas fa-tasks text-4xl text-gray-400"></i>
-                                </div>
-                                <p class="text-gray-500 text-lg mb-2">No gigs in progress</p>
-                                <p class="text-gray-400 text-sm">When work begins on your gigs, they'll appear here</p>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            @endif
-        </div>
-
-        <!-- Application Details Modal -->
-        @if($showApplicationModal && $selectedApplication)
-            <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full mx-4 max-h-screen overflow-y-auto">
-
-                    <!-- Modal Header -->
-                    <div
-                        class="bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4 rounded-t-2xl flex justify-between items-center">
-                        <h3 class="text-2xl font-bold text-white">Application Details</h3>
-                        <button wire:click="closeApplicationModal" class="text-white hover:text-gray-200">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <!-- Modal Body -->
-                    <div class="p-8">
-                        <!-- Freelancer Info -->
-                        <div class="bg-gray-50 rounded-xl p-6 mb-6">
-                            <div class="flex items-start gap-4">
-                                <div
-                                    class="w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center text-white font-bold text-2xl">
-                                    {{ substr($selectedApplication->freelancer->name, 0, 1) }}
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="text-xl font-bold text-gray-900 mb-1">
-                                        {{ $selectedApplication->freelancer->name }}</h4>
-                                    <p class="text-sm text-gray-600">{{ $selectedApplication->freelancer->email }}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Gig Info -->
-                        <div class="bg-blue-50 rounded-xl p-4 mb-6">
-                            <h4 class="font-semibold text-gray-700 mb-2">Gig:</h4>
-                            <p class="text-lg font-bold text-gray-900">{{ $selectedApplication->gig->title }}</p>
-                            <p class="text-sm text-gray-600 mt-2">
-                                Proposed Rate: <span
-                                    class="font-bold text-green-600">${{ number_format($selectedApplication->proposed_price, 2) }}</span>
-                            </p>
-                        </div>
-
-                        <!-- Cover Letter -->
-                        <div class="mb-6">
-                            <h4 class="font-semibold text-gray-700 mb-2">Cover Letter</h4>
-                            <div class="bg-white border border-gray-200 rounded-xl p-4 text-gray-700 whitespace-pre-line">
-                                {{ $selectedApplication->cover_letter }}
-                            </div>
-                        </div>
-
-                        <!-- Application Date -->
-                        <div class="mb-6 text-sm text-gray-500">
-                            Submitted {{ $selectedApplication->created_at->diffForHumans() }}
-                            ({{ $selectedApplication->created_at->format('M d, Y \a\t h:i A') }})
-                        </div>
-                    </div>
-
-                    <!-- Modal Footer -->
-                    <div class="bg-gray-50 px-8 py-6 rounded-b-2xl flex justify-end gap-4">
-                        <button wire:click="closeApplicationModal"
-                            class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-semibold hover:bg-gray-100 transition">
-                            Close
-                        </button>
-                        <button wire:click="rejectApplication({{ $selectedApplication->id }})"
-                            wire:confirm="Are you sure you want to reject this application?"
-                            class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition">
-                            <i class="fas fa-times mr-2"></i>Reject
-                        </button>
-                        <button wire:click="openPaymentModal({{ $selectedApplication->gig_id }}, {{ $selectedApplication->id }})"
-                                wire:confirm="You will be charged ${{ number_format($selectedApplication->proposed_price, 2) }}. Continue?"
-                                class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold transition">
-                            <i class="fas fa-credit-card mr-2"></i>Accept & Pay ${{ number_format($selectedApplication->proposed_price, 2) }}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        @endif
-
-        <!-- In-House Assignment Modal -->
-        @if($selectedGigId)
-            <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4">
-
-                    <!-- Modal Header -->
-                    <div
-                        class="bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-4 rounded-t-2xl flex justify-between items-center">
-                        <h3 class="text-2xl font-bold text-white">
-                            <i class="fas fa-home mr-2"></i>Assign to In-House Developer
-                        </h3>
-                        <button wire:click="$set('selectedGigId', null)" class="text-white hover:text-gray-200">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <!-- Modal Body -->
-                    <div class="p-8">
-                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
-                            <p class="text-sm text-gray-700">
-                                <i class="fas fa-info-circle text-blue-600 mr-2"></i>
-                                Submit a request to assign this gig to an in-house developer. Our team will review and
-                                assign a qualified developer from our internal team.
-                            </p>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                Additional Notes <span class="text-gray-500">(Optional)</span>
-                            </label>
-                            <textarea wire:model="inhouseNotes" rows="6"
-                                placeholder="Add any specific requirements, preferences, or timeline expectations..."
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"></textarea>
-                        </div>
-                    </div>
-
-                    <!-- Modal Footer -->
-                    <div class="bg-gray-50 px-8 py-6 rounded-b-2xl flex justify-end gap-4">
-                        <button wire:click="$set('selectedGigId', null)"
-                            class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-semibold hover:bg-gray-100 transition">
-                            Cancel
-                        </button>
-                        <button wire:click="assignToInHouseDeveloper"
-                            class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-bold transition">
-                            <i class="fas fa-paper-plane mr-2"></i>Submit Request
-                        </button>
-                    </div>
                 </div>
             </div>
         @endif
     </div>
-    <livewire:client.create-gig />
-    <!-- Add Payment Checkout Component -->
-    <livewire:client.payment-checkout />
+
+    <!-- Application Details Modal -->
+    @if ($showApplicationModal && $selectedApplication)
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full mx-4 max-h-screen overflow-y-auto">
+
+                <!-- Modal Header -->
+                <div
+                    class="bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4 rounded-t-2xl flex justify-between items-center">
+                    <h3 class="text-2xl font-bold text-white">Application Details</h3>
+                    <button wire:click="closeApplicationModal" class="text-white hover:text-gray-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="p-8">
+                    <!-- Freelancer Info -->
+                    <div class="bg-gray-50 rounded-xl p-6 mb-6">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center text-white font-bold text-2xl">
+                                {{ substr($selectedApplication->freelancer->name, 0, 1) }}
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-xl font-bold text-gray-900 mb-1">
+                                    {{ $selectedApplication->freelancer->name }}</h4>
+                                <p class="text-sm text-gray-600">{{ $selectedApplication->freelancer->email }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gig Info -->
+                    <div class="bg-blue-50 rounded-xl p-4 mb-6">
+                        <h4 class="font-semibold text-gray-700 mb-2">Gig:</h4>
+                        <p class="text-lg font-bold text-gray-900">{{ $selectedApplication->gig->title }}</p>
+                        <p class="text-sm text-gray-600 mt-2">
+                            Proposed Rate: <span
+                                class="font-bold text-green-600">${{ number_format($selectedApplication->proposed_price, 2) }}</span>
+                        </p>
+                    </div>
+
+                    <!-- Cover Letter -->
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-gray-700 mb-2">Cover Letter</h4>
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 text-gray-700 whitespace-pre-line">
+                            {{ $selectedApplication->cover_letter }}
+                        </div>
+                    </div>
+
+                    <!-- Application Date -->
+                    <div class="mb-6 text-sm text-gray-500">
+                        Submitted {{ $selectedApplication->created_at->diffForHumans() }}
+                        ({{ $selectedApplication->created_at->format('M d, Y \a\t h:i A') }})
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="bg-gray-50 px-8 py-6 rounded-b-2xl flex justify-end gap-4">
+                    <button wire:click="closeApplicationModal"
+                        class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-semibold hover:bg-gray-100 transition">
+                        Close
+                    </button>
+                    <button wire:click="rejectApplication({{ $selectedApplication->id }})"
+                        wire:confirm="Are you sure you want to reject this application?"
+                        class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition">
+                        <i class="fas fa-times mr-2"></i>Reject
+                    </button>
+                    <button
+                        wire:click="openPaymentModal({{ $selectedApplication->gig_id }}, {{ $selectedApplication->id }})"
+                        wire:confirm="You will be charged ${{ number_format($selectedApplication->proposed_price, 2) }}. Continue?"
+                        class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold transition">
+                        <i class="fas fa-credit-card mr-2"></i>Accept & Pay
+                        ${{ number_format($selectedApplication->proposed_price, 2) }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- In-House Assignment Modal -->
+    @if ($selectedGigId)
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4">
+
+                <!-- Modal Header -->
+                <div
+                    class="bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-4 rounded-t-2xl flex justify-between items-center">
+                    <h3 class="text-2xl font-bold text-white">
+                        <i class="fas fa-home mr-2"></i>Assign to In-House Developer
+                    </h3>
+                    <button wire:click="$set('selectedGigId', null)" class="text-white hover:text-gray-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="p-8">
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+                        <p class="text-sm text-gray-700">
+                            <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+                            Submit a request to assign this gig to an in-house developer. Our team will review and
+                            assign a qualified developer from our internal team.
+                        </p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Additional Notes <span class="text-gray-500">(Optional)</span>
+                        </label>
+                        <textarea wire:model="inhouseNotes" rows="6"
+                            placeholder="Add any specific requirements, preferences, or timeline expectations..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"></textarea>
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="bg-gray-50 px-8 py-6 rounded-b-2xl flex justify-end gap-4">
+                    <button wire:click="$set('selectedGigId', null)"
+                        class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-semibold hover:bg-gray-100 transition">
+                        Cancel
+                    </button>
+                    <button wire:click="assignToInHouseDeveloper"
+                        class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-bold transition">
+                        <i class="fas fa-paper-plane mr-2"></i>Submit Request
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+</div>
+<livewire:client.create-gig />
+<!-- Add Payment Checkout Component -->
+<livewire:client.payment-checkout />
 </div>
