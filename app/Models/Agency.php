@@ -14,7 +14,12 @@ class Agency extends Model
     }
 
     public function invitations()
-{
-    return $this->hasMany(AgencyInvitation::class);
-}
+    {
+        return $this->hasMany(AgencyInvitation::class);
+    }
+
+    public function gigApplications()
+    {
+        return $this->hasMany(GigApplication::class);
+    }
 }

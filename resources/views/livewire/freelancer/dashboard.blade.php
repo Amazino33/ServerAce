@@ -415,34 +415,39 @@
             <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-screen overflow-y-auto">
 
-                    <!-- Modal Header -->
-                    <div
-                        class="bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4 rounded-t-2xl flex justify-between items-center">
+                    <div class="bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4 rounded-t-2xl flex justify-between items-center">
                         <h3 class="text-2xl font-bold text-white">Apply to Gig</h3>
                         <button wire:click="closeApplicationModal" class="text-white hover:text-gray-200">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
                         </button>
                     </div>
 
-                    <!-- Modal Body -->
                     <div class="p-8">
-                        <!-- Gig Info -->
                         <div class="bg-gray-50 rounded-xl p-4 mb-6">
                             <h4 class="text-xl font-bold text-gray-900">{{ $selectedGig->title }}</h4>
-                            <p class="text-gray-600 mt-2">{{ Str::limit($selectedGig->description, 200) }}</p>
                             <div class="mt-3 flex items-center gap-4 text-sm text-gray-500">
-                                <span>Budget: <strong
-                                        class="text-green-600">{{ $selectedGig->budget_display }}</strong></span>
+                                <span>Budget: <strong class="text-green-600">{{ $selectedGig->budget_display }}</strong></span>
                                 <span>Client: <strong>{{ $selectedGig->client->name }}</strong></span>
                             </div>
                         </div>
 
-                        <!-- Application Form -->
                         <form wire:submit.prevent="submitApplication">
-                            <!-- Proposed Price -->
+
+                            @if(auth()->user()->agencies->count() > 0)
+                                <div class="mb-6 p-4 bg-green-50 rounded-xl border border-green-100">
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Apply As:</label>
+                                    <select wire:model="selectedAgencyId" class="w-full border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
+                                        <option value="">Myself (Individual Freelancer)</option>
+                                        @foreach(auth()->user()->agencies as $agency)
+                                            <option value="{{ $agency->id }}">{{ $agency->name }} (Agency)</option>
+                                        @endforeach
+                                    </select>
+                                    <p class="mt-2 text-xs text-gray-500 italic">Choosing an agency allows you to bid as a team. Leave as "Myself" for a solo bid.</p>
+                                </div>
+                            @endif
+
                             <div class="mb-6">
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                                     Your Proposed Price <span class="text-red-500">*</span>
@@ -458,32 +463,26 @@
                                 @enderror
                             </div>
 
-                            <!-- Cover Letter -->
                             <div class="mb-6">
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                                     Cover Letter <span class="text-red-500">*</span>
                                 </label>
                                 <textarea wire:model="coverLetter" rows="6"
                                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                    placeholder="Tell the client why you're the best fit for this project... (minimum 50 characters)"></textarea>
+                                    placeholder="Tell the client why you're the best fit for this project..."></textarea>
                                 <div class="flex justify-between items-center mt-1">
                                     @error('coverLetter')
                                         <p class="text-sm text-red-600">{{ $message }}</p>
-                                    @else
-                                        <p class="text-sm text-gray-500">Minimum 50 characters</p>
                                     @enderror
                                     <p class="text-sm text-gray-400">{{ strlen($coverLetter) }}/1000</p>
                                 </div>
                             </div>
 
-                            <!-- Submit Button -->
                             <div class="flex gap-4">
-                                <button type="submit"
-                                    class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl transition">
+                                <button type="submit" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl transition">
                                     Submit Application
                                 </button>
-                                <button type="button" wire:click="closeApplicationModal"
-                                    class="px-6 py-3 border border-gray-300 rounded-xl text-gray-700 font-semibold hover:bg-gray-50 transition">
+                                <button type="button" wire:click="closeApplicationModal" class="px-6 py-3 border border-gray-300 rounded-xl text-gray-700 font-semibold hover:bg-gray-50 transition">
                                     Cancel
                                 </button>
                             </div>

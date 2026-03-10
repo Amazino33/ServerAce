@@ -10,7 +10,7 @@ class GigApplication extends Model
         'gig_id',
         'freelancer_id',
         'cover_letter',
-        'proposed_price', 
+        'proposed_price',
         'status'
     ];
 
@@ -38,6 +38,11 @@ class GigApplication extends Model
     public function freelancer()
     {
         return $this->belongsTo(User::class, 'freelancer_id');
+    }
+
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
     }
 
     // =========================================
@@ -76,7 +81,7 @@ class GigApplication extends Model
         return $query->orderBy('created_at', 'desc');
     }
 
-    
+
     // =========================================
     // HELPER METHODS
     // =========================================
@@ -97,7 +102,7 @@ class GigApplication extends Model
         return $this->status === 'accepted';
     }
 
-    /** 
+    /**
      * Check if application is rejected
      */
     public function isRejected()
@@ -106,7 +111,15 @@ class GigApplication extends Model
     }
 
     /**
-     * Accept this application 
+     * Check if the application is from an agency
+     */
+    public function isAgencyBid(): bool
+    {
+        return !is_null($this->agency_id);
+    }
+
+    /**
+     * Accept this application
      */
     public function accept()
     {

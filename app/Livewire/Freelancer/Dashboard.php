@@ -23,6 +23,7 @@ class Dashboard extends Component
     // Property for viewing application details
     public $showApplicationDetailModal = false;
     public $selectedApplication = null;
+    public $selectedAgencyId = null; // default to null (personal or solo applications)
 
     /**
      * Switch between tabs
@@ -67,36 +68,59 @@ class Dashboard extends Component
      */
     public function submitApplication()
     {
-        // Validate the input
+        // 1. Validate the input (including the new agency field)
         $this->validate([
             'coverLetter' => 'required|min:50|max:1000',
             'proposedPrice' => 'required|numeric|min:1',
+            'selectedAgencyId' => 'nullable|exists:agencies,id',
         ], [
             'coverLetter.required' => 'Please write a cover letter',
             'coverLetter.min' => 'Cover letter must be at least 50 characters',
-            'coverLetter.max' => 'Cover letter cannot exceed 1000 characters',
             'proposedPrice.required' => 'Please enter your proposed price',
-            'proposedPrice.numeric' => 'Price must be a valid number',
-            'proposedPrice.min' => 'Price must be at least $1',
         ]);
 
-        // Check if user already applied
-        if (auth()->user()->hasAppliedTo($this->selectedGig)) {
-            session()->flash('error', 'You have already applied to this gig!');
+        // 2. Security Check: Verify Agency Membership
+        if ($this->selectedAgencyId) {
+            $isMember = auth()->user()->agencies()
+                ->where('agencies.id', $this->selectedAgencyId)
+                ->exists();
+
+            if (!$isMember) {
+                session()->flash('error', 'Security Alert: You are not a member of the selected agency!');
+                $this->closeApplicationModal();
+                return;
+            }
+        }
+
+        // 3. Senior Logic: Context-Aware "Already Applied" Check
+        // We check if this specific user has applied to this gig using this specific agency context.
+        $alreadyApplied = \App\Models\GigApplication::where('gig_id', $this->selectedGig->id)
+            ->where('freelancer_id', auth()->id())
+            ->where('agency_id', $this->selectedAgencyId) // Null if personal, ID if agency
+            ->exists();
+
+        if ($alreadyApplied) {
+            $context = $this->selectedAgencyId ? 'on behalf of this agency' : 'personally';
+            session()->flash('error', "You have already applied to this gig $context!");
             $this->closeApplicationModal();
             return;
         }
 
-        // Create the application
-        GigApplication::create([
+        // 4. Create the application with the Agency ID
+        \App\Models\GigApplication::create([
             'gig_id' => $this->selectedGig->id,
             'freelancer_id' => auth()->id(),
+            'agency_id' => $this->selectedAgencyId, // This is the key addition
             'cover_letter' => $this->coverLetter,
             'proposed_price' => $this->proposedPrice,
             'status' => 'pending',
         ]);
 
+        // 5. Success Feedback
         session()->flash('success', 'Application submitted successfully!');
+
+        // Refresh the page or reset properties if needed
+        $this->reset(['coverLetter', 'proposedPrice', 'selectedAgencyId']);
         $this->closeApplicationModal();
     }
 

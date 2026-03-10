@@ -15,12 +15,12 @@
                     <!-- Badge -->
                     <div class="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-lg border border-green-100">
                         <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-2"></span>
-                        <span class="text-sm font-semibold text-gray-700">Trusted by 10,000+ Businesses</span>
+                        <span class="text-sm font-semibold text-gray-700">Built for Startups, Builders & Growing Companies</span>
                     </div>
 
                     <!-- Main Heading -->
                     <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-tight">
-                        <span class="block text-gray-900">Stepping Into</span>
+                        <span class="block text-gray-900">Step Into</span>
                         <span class="block bg-gradient-to-r from-brand-accent to-brand-dark bg-clip-text text-transparent mt-2">
                             The Future
                         </span>
@@ -29,40 +29,40 @@
 
                     <!-- Subheading -->
                     <p class="text-xl text-gray-600 max-w-2xl leading-relaxed">
-                        Connect with skilled professionals for Linux, Windows, cPanel, DDoS protection, and server optimization. Get your projects done fast and right.
+                        Connect with verified global talent through flexible Startup & Professional tracks, structured for execution, collaboration, and growth.
                     </p>
 
                     <!-- CTA Buttons -->
                     <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                        <a href="{{ route('gigs.index') }}" 
+                        <a href="{{ route('gigs.index') }}"
                            class="group inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-600 to-blue-600 text-white font-bold rounded-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 shadow-lg">
                             <i class="fas fa-search mr-2"></i>
-                            Browse Gigs
+                            Join as Builder
                             <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
                             </svg>
                         </a>
-                        
-                        <a href="{{ route('post-gig') }}" 
+
+                        <a href="{{ route('post-gig') }}"
                            class="inline-flex items-center justify-center px-8 py-4 bg-white text-gray-900 font-bold rounded-xl border-2 border-gray-200 hover:border-green-500 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                             <i class="fas fa-plus-circle mr-2 text-green-600"></i>
-                            Post a Gig
+                            Find Talent
                         </a>
                     </div>
 
                     <!-- Stats -->
                     <div class="grid grid-cols-3 gap-6 pt-8 border-t border-gray-200">
                         <div class="text-center lg:text-left">
-                            <div class="text-3xl font-bold text-gray-900">1,000+</div>
-                            <div class="text-sm text-gray-600 mt-1">Active Gigs</div>
+                            {{-- <div class="text-3xl font-bold text-gray-900">1,000+</div> --}}
+                            <div class="text-xl text-gray-600 mt-1">Dual Contract Tracks</div>
                         </div>
                         <div class="text-center lg:text-left">
-                            <div class="text-3xl font-bold text-gray-900">5,000+</div>
-                            <div class="text-sm text-gray-600 mt-1">Professionals</div>
+                            {{-- <div class="text-3xl font-bold text-gray-900">5,000+</div> --}}
+                            <div class="text-xl text-gray-600 mt-1">Structured Project Dashboards</div>
                         </div>
                         <div class="text-center lg:text-left">
-                            <div class="text-3xl font-bold text-gray-900">98%</div>
-                            <div class="text-sm text-gray-600 mt-1">Success Rate</div>
+                            {{-- <div class="text-3xl font-bold text-gray-900">98%</div> --}}
+                            <div class="text-xl text-gray-600 mt-1">Verified Talent & Agencies</div>
                         </div>
                     </div>
                 </div>
@@ -98,10 +98,10 @@
 
                         <!-- Main Image -->
                         {{-- <div class="relative bg-gradient-to-br from-green-100 to-blue-100 rounded-3xl p-8 shadow-2xl">
-                            <img src="{{ asset('storage/images/dev/hero-img.svg') }}" 
-                                 alt="Server Admin Illustration" 
+                            <img src="{{ asset('storage/images/dev/hero-img.svg') }}"
+                                 alt="Server Admin Illustration"
                                  class="w-full h-auto relative z-10">
-                            
+
                             <!-- Decorative Elements -->
                             <div class="absolute top-1/4 -left-4 w-24 h-24 bg-green-400 rounded-full opacity-30 blur-2xl"></div>
                             <div class="absolute bottom-1/4 -right-4 w-24 h-24 bg-blue-400 rounded-full opacity-30 blur-2xl"></div>
@@ -130,40 +130,58 @@
                 <!-- Feature 1 -->
                 <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-gray-100 hover:border-green-500">
                     <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-blue-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <i class="fas fa-bolt text-white text-2xl"></i>
+                        <i class="fas fa-file-contract text-white text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Fast Delivery</h3>
-                    <p class="text-gray-600">Get your server issues resolved in hours, not days. Our experts work quickly and efficiently.</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Flexible Contract Tracks</h3>
+                    <p class="text-gray-600">Choose between Startup (equity + cash) or Professional (cash-only) engagements.</p>
                 </div>
 
                 <!-- Feature 2 -->
                 <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-gray-100 hover:border-green-500">
                     <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                        <i class="fas fa-users text-white text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Secure & Reliable</h3>
-                    <p class="text-gray-600">All work is protected with secure escrow payments and verified professional credentials.</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Agency & Collaboration Ready</h3>
+                    <p class="text-gray-600">Hire full teams or enable independent freelancers to collaborate seamlessly.</p>
                 </div>
 
                 <!-- Feature 3 -->
                 <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-gray-100 hover:border-green-500">
                     <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <i class="fas fa-star text-white text-2xl"></i>
+                        <i class="fas fa-user-check text-white text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Top Talent</h3>
-                    <p class="text-gray-600">Access pre-vetted server administrators with proven track records and excellent reviews.</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Verified & Structured</h3>
+                    <p class="text-gray-600">Identity verification, milestone tracking, and transparent execution dashboards.</p>
                 </div>
 
                 <!-- Feature 4 -->
                 <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-gray-100 hover:border-green-500">
                     <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-teal-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <i class="fas fa-dollar-sign text-white text-2xl"></i>
+                        <i class="fas fa-clipboard-list text-white text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Fair Pricing</h3>
-                    <p class="text-gray-600">Transparent pricing with no hidden fees. Pay only for the work you need.</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Easy Management</h3>
+                    <p class="text-gray-600">Track progress, drop reports, manage milestones, and showcase outcomes, private or public.</p>
                 </div>
 
                 <!-- Feature 5 -->
+                <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-gray-100 hover:border-green-500">
+                    <div class="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-globe text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Global Talent Access</h3>
+                    <p class="text-gray-600">Work with vetted professionals across engineering, DevOps, product, Web3, and operations.</p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-gray-100 hover:border-green-500">
+                    <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-rocket text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Built for Growth</h3>
+                    <p class="text-gray-600">From early-stage startups to scaling companies, structured to grow with you.</p>
+                </div>
+
+                <!-- Feature 7 -->
                 <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-gray-100 hover:border-green-500">
                     <div class="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                         <i class="fas fa-headset text-white text-2xl"></i>
@@ -172,13 +190,13 @@
                     <p class="text-gray-600">Round-the-clock customer support to help you every step of the way.</p>
                 </div>
 
-                <!-- Feature 6 -->
+                <!-- Feature 8 -->
                 <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-gray-100 hover:border-green-500">
-                    <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <i class="fas fa-tasks text-white text-2xl"></i>
+                    <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-shield-alt text-white text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Easy Management</h3>
-                    <p class="text-gray-600">Simple dashboard to track projects, communicate, and manage payments seamlessly.</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Secure & Reliable</h3>
+                    <p class="text-gray-600">All work is protected with secure escrow payments and verified professional credentials.</p>
                 </div>
             </div>
         </div>
@@ -198,9 +216,9 @@
             <p class="text-xl text-white opacity-90 mb-10 max-w-2xl mx-auto">
                 Join thousands of businesses finding expert server administrators for their projects
             </p>
-            
+
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{{ route('register') }}" 
+                <a href="{{ route('register') }}"
                    class="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-bold rounded-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 shadow-lg">
                     <i class="fas fa-rocket mr-2"></i>
                     Create Free Account
@@ -208,8 +226,8 @@
                         <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
                     </svg>
                 </a>
-                
-                <a href="{{ route('gigs.index') }}" 
+
+                <a href="{{ route('gigs.index') }}"
                    class="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-bold rounded-xl border-2 border-white hover:bg-white hover:text-green-600 transition-all duration-300">
                     <i class="fas fa-eye mr-2"></i>
                     View Available Gigs
